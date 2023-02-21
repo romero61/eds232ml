@@ -203,13 +203,13 @@ i10 <- flextable(instrument_top_ten)
 
 ```{r}
 
-(valence_10 + gen_grob(v10, fit = "width", just = "top", scaling = 'full')) 
+((valence_10 + gen_grob(v10, fit = "width", just = "top", scaling = 'full')) 
+/
+(instrument_10 + gen_grob(i10, fit = "width", just = "top", scaling = 'full'))  )
 
-(instrument_10 + gen_grob(i10, fit = "width", just = "top", scaling = 'full'))  
+((danceability_10 + gen_grob(d10, fit = 'width', just = "top", scaling = 'full')) /
 
-(danceability_10 + gen_grob(d10, fit = 'width', just = "top", scaling = 'full')) 
-
-(energy_10 + gen_grob(e10, fit = "width", just = "top", scaling = 'full')) 
+(energy_10 + gen_grob(e10, fit = "width", just = "top", scaling = 'full')) )
 ```
 
 
