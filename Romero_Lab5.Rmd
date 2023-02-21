@@ -520,8 +520,113 @@ bag_rs <- tune_grid(
   grid = bag_grid,
   metrics = metric_set(accuracy))
 ```
+```{r}
+bag_rs |> collect_metrics()
 
-4.  random forest
+```
+
+```{r}
+# get best model based on the metric
+best_bag_mod <- select_best(bag_rs, "accuracy")
+
+# fit the best model to the training data
+final_bag <- finalize_workflow(wf_bag_tune, best_bag_mod) %>% 
+  fit(data = spotify_train)
+```
+
+
+```{r}
+# make predictions on the test set using the fitted model
+test_pred <- final_bag %>% 
+  predict(new_data = spotify_test) %>% 
+  bind_cols(spotify_test)
+
+# evaluate the accuracy of the fitted model on the test set
+test_pred %>% 
+  metrics(truth = data_owned_by, estimate = .pred_class)
+test_pred
+```
+
+
+# Random Forest
     -   rand_forest()
     -   m_try() is the new hyperparameter of interest for this type of model. Make sure to include it in your tuning process Go through the modeling process for each model: Preprocessing. You can use the same recipe for all the models you create. Resampling. Make sure to use appropriate resampling to select the best version created by each algorithm. Tuning. Find the best values for each hyperparameter (within a reasonable range). Compare the performance of the four final models you have created.\
         Use appropriate performance evaluation metric(s) for this classification task. A table would be a good way to display your comparison. Use at least one visualization illustrating your model results.
+```{r}
+# Create training (70%) and test (30%) sets
+set.seed(123)
+spotify_split <- initial_split(tracks_merged, prop = 0.70)
+spotify_train <- training(spotify_split)
+spotify_test <- testing(spotify_split)
+
+set.seed(234)
+val_set <- validation_split(spotify_train, 
+                            strata = data_owned_by, 
+                            prop = 0.70)
+val_set
+
+# Create a recipe
+spotify_rec <- recipe(data_owned_by ~ ., data = spotify_train) %>%
+  step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) %>% 
+  step_normalize(all_numeric(), -all_outcomes()) %>% 
+  prep()
+```
+
+
+```{r}
+# Create a cross-validation object
+rf_cv <- vfold_cv(spotify_train, v = 5, strata = data_owned_by)
+
+# Create a Random Forest specification
+rf_spec <- rand_forest(trees = 1000) %>%
+  set_engine("ranger") %>%
+  set_mode("classification")
+
+# Create a Random Forest workflow
+rf_wf <- workflow() %>%
+  add_recipe(spotify_rec) %>%
+  add_model(rf_spec)
+
+# Tune the Random Forest model
+rf_grid <- grid_latin_hypercube(
+  mtry = tune(),
+  min_n = tune(),
+  trees = tune(),
+  sample_size = tune())
+```
+
+
+```{r}
+set.seed(123)
+doParallel::registerDoParallel()
+rf_res <- tune_grid(
+  rf_wf,
+  resamples = rf_cv,
+  grid = rf_grid,
+  metrics = metric_set(accuracy),
+  control = control_grid(verbose = TRUE)
+)
+```
+
+```{r}
+rf_res |> collect_metrics()
+```
+
+```{r}
+# Get the best Random Forest model
+best_rf <- select_best(rf_res, "accuracy")
+
+# Fit the best model to the training data
+final_rf <- rf_wf %>%
+  finalize_workflow(best_rf) %>%
+  fit(data = spotify_train)
+
+# Make predictions on the test set
+test_pred <- final_rf %>%
+  predict(spotify_test)
+
+# Evaluate the performance of the Random Forest model on the test set
+test_pred %>%
+  metrics(truth = data_owned_by, estimate = .pred_class)
+```
+
