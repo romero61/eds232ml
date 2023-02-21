@@ -29,6 +29,7 @@ library(ggpubr)
 library(patchwork)
 library(caret)
 library(corrplot)
+library(flextable)
 ```
 
 Client ID and Client Secret are required to create and access token that is required to interact with the API. You can set them as system values so we don't have to do provide them each time.
@@ -105,9 +106,13 @@ track_features <- bind_rows(feature1,feature2, feature3, feature4) |>
 ```
 
 ```{r}
+# 0 = Guillermo
+#1 = Dalila
 features_0 <- track_features |> 
   mutate(data_owned_by = as.factor(0)) |> 
-  select(-type, -id,-uri,-track_href,-analysis_url)
+  select(-type, -id,-uri,-track_href,-analysis_url) |>
+  slice(1:200)
+
 
 dalilas_tracks <- read.csv('dalila_spotify.csv') |> 
   mutate(data_owned_by = as.factor(1)) |> 
@@ -134,15 +139,86 @@ names(tracks_merged)
 ```
 
 
-```{r}
-skim(tracks_merged)
-summary(tracks_merged)
-```
 
 For example: What are the most danceable tracks in your dataset? What are some differences in the data between users (Option 1) or genres (Option 2)?
 
+# Top Ten
+```{r}
+# 0 = Guillermo
+#1 = Dalila
+danceability_top_ten <-  tracks_merged |> 
+  select(track_name, danceability, data_owned_by) |> 
+  slice_max(n = 10,order_by = danceability)
+
+energy_top_ten <- tracks_merged |> 
+  select(track_name, energy, data_owned_by) |> 
+  slice_max(n = 10,order_by = energy)
+
+valence_top_ten <- tracks_merged |> 
+  select(track_name, valence, data_owned_by) |> 
+  slice_max(n = 10,order_by = valence)
+
+instrument_top_ten <- tracks_merged |> 
+  select(track_name, instrumentalness, data_owned_by) |> 
+  slice_max(n = 10,order_by = instrumentalness)
+```
+
+```{r}
+# 0 = Guillermo
+#1 = Dalila
+
+danceability_10 <- danceability_top_ten  |> 
+  gghistogram( x = "danceability", bins = 10,
+   add = "mean", rug = TRUE,
+   color = "data_owned_by", fill = "data_owned_by",
+   palette = c("#0073C2FF", "#FC4E07"))+
+  theme_pubclean()
+
+energy_10 <- energy_top_ten  |> 
+  gghistogram( x = "energy", bins = 10,
+   add = "mean", rug = TRUE,
+   color = "data_owned_by", fill = "data_owned_by",
+   palette = c("#0073C2FF", "#FC4E07"))+
+  theme_pubclean()
+
+valence_10 <- valence_top_ten  |> 
+  gghistogram( x = "valence", bins = 10,
+   add = "mean", rug = TRUE,
+   color = "data_owned_by", fill = "data_owned_by",
+   palette = c("#0073C2FF", "#FC4E07"))+
+  theme_pubclean()
+
+instrument_10 <- instrument_top_ten  |> 
+  gghistogram( x = "instrumentalness", bins = 10,
+   add = "mean", rug = TRUE,
+   color = "data_owned_by", fill = "data_owned_by",
+   palette = c("#0073C2FF", "#FC4E07"))+
+  theme_pubclean()
+
+d10 <- flextable(danceability_top_ten)
+e10 <- flextable(energy_top_ten)
+v10 <- flextable(valence_top_ten)
+i10 <- flextable(instrument_top_ten)
+```
+
 ```{r}
 
+(valence_10 + gen_grob(v10, fit = "width", just = "top", scaling = 'full')) 
+
+(instrument_10 + gen_grob(i10, fit = "width", just = "top", scaling = 'full'))  
+
+(danceability_10 + gen_grob(d10, fit = 'width', just = "top", scaling = 'full')) 
+
+(energy_10 + gen_grob(e10, fit = "width", just = "top", scaling = 'full')) 
+```
+
+
+
+
+
+```{r}
+
+# overall distribution in danceability between two
 danceability <- tracks_merged  |> 
   gghistogram( x = "danceability", bins = 30,
    add = "mean", rug = TRUE,
@@ -154,18 +230,18 @@ danceability <- tracks_merged  |>
   
 
 danceabilty_valence <- tracks_merged |> 
-  ggplot(aes(x = valence, y = danceability, color = data_owned_by, size = instrumentalness)) +
-  scale_size(range = c(0, 12)) +
-  geom_count(col = 'violetred1',alpha = 0.5) +
+  ggplot(aes(x = valence, y = danceability, color = data_owned_by, size = energy)) +
+  scale_size(range = c(0, 6)) +
+  geom_count(alpha = 0.5) +
   labs(x= "Valence", y= "Danceability") +
-  ggtitle("Valence vs. Danceability For My Saved Tracks") +
+  ggtitle("Valence vs. Danceability For Merged Datasets") +
   theme(plot.title = element_text(face="bold")) +
   theme(legend.position="bottom") +
-  guides(col=guide_legend(ncol = 3))+
+  guides(col=guide_legend(ncol = 3)) +
   theme_pubr()
 
-danceability 
-danceabilty_valence
+
+danceabilty_valence + danceability 
 
 ```
 
@@ -181,8 +257,11 @@ Then validate and compare the performance of the two models you have created.
 
 Make sure to use appropriate resampling to select the best version of each algorithm to compare and some appropriate visualization of your results.
 
+# KNN
 ```{r}
 
+tracks_merged <- tracks_merged |> 
+  select(-track_name)
 
 # Create training (70%) and test (30%) sets for the 
 set.seed(123)  # for reproducibility (random sample)
@@ -193,17 +272,17 @@ spotify_split
 ```
 
 ```{r}
-user_spotify_rec <- recipe(data_owned_by ~ ., data = spotify_train) |>
+knn_rec <- recipe(data_owned_by ~ ., data = spotify_train) |>
   step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) |> 
   step_normalize(all_numeric(), -all_outcomes()) |> 
   prep() 
 
-baked_churn <- bake(user_spotify_rec,spotify_train)
+baked_churn <- bake(knn_rec,spotify_train)
 
 ```
 
 ```{r}
-baked_test <- bake(user_spotify_rec, spotify_test)
+baked_test <- bake(knn_rec, spotify_test)
 ```
 
 # Specify the k-nearest neighbor model
@@ -220,5 +299,107 @@ knn_fit <- knn_spec %>%
 ```
 
 ```{r}
-baked_test <- bake(user_spotify_rec, spotify_test)
+baked_test <- bake(knn_rec, spotify_test)
 ```
+```{r}
+set.seed(123)
+# 5-fold CV on the training dataset
+cv_folds <- spotify_train |>  vfold_cv(v = 5)
+```
+
+```{r}
+knn_workflow <- workflow() |> 
+    add_model(knn_spec) |> 
+    add_recipe(knn_rec) 
+```
+
+```{r}
+knn_res <- knn_workflow |> 
+  fit_resamples(
+    resamples = cv_folds,
+    control = control_resamples(save_pred = TRUE)
+  )
+```
+
+```{r}
+# Check the performance
+knn_res |> collect_metrics()
+```
+
+```{r}
+# Define our KNN model with tuning
+# you can specify neigbors default five, can also put in tune() to tune
+knn_spec_tune <- 
+  nearest_neighbor(neighbors = tune()) |> 
+  set_mode('classification') |> 
+  set_engine('kknn')
+
+# Check the model
+knn_spec_tune
+
+```
+
+```{r}
+# Define the workflow
+wf_knn_tune <- 
+    workflow() |> 
+    add_model(knn_spec_tune) |> 
+    add_recipe(knn_rec)
+```
+
+```{r}
+# Fit the workflow on our predefined folds and hyperparameters
+fit_knn_cv <- wf_knn_tune |> 
+  tune_grid(cv_folds,
+            grid = data.frame(neighbors = c(1,5, seq(10, 100, 10))))
+    
+# Check the performance with collect_metrics()
+fit_knn_cv|> collect_metrics()
+```
+
+```{r}
+final_wf <- 
+    wf_knn_tune |> 
+    finalize_workflow(select_best(fit_knn_cv, metric = "accuracy"))
+# Check out the final workflow object
+final_wf
+```
+
+```{r}
+
+# Fitting our final workflow
+final_fit <- final_wf|> fit(data = spotify_train)
+# Examine the final workflow
+final_fit
+```
+
+```{r}
+churn_pred <-  final_fit |> predict(new_data = spotify_test)
+
+churn_pred |> head()
+```
+
+
+```{r}
+# Write over 'final_fit' with this last_fit() approach
+final_fit <-  final_wf |> last_fit(spotify_split)
+# Collect metrics on the test data!
+final_fit|> collect_metrics()
+```
+
+1. k-nearest neighbor
+2. decision tree
+
+
+3. bagged tree
+   - bag_tree()
+   - Use the "times =" argument when setting the engine during model specification to specify the number of         trees. The rule of thumb is that 50-500 trees is usually sufficient.  The bottom of that range should          be sufficient here.  
+4. random forest
+   - rand_forest()
+   - m_try() is the new hyperparameter of interest for this type of model.  Make sure to include it in your         tuning process
+Go through the modeling process for each model:
+Preprocessing. You can use the same recipe for all the models you create.
+Resampling. Make sure to use appropriate resampling to select the best version created by each algorithm.
+Tuning. Find the best values for each hyperparameter (within a reasonable range).
+Compare the performance of the four final models you have created.  
+Use appropriate performance evaluation metric(s) for this classification task. A table would be a good way to display your comparison.  Use at least one visualization illustrating your model results.
