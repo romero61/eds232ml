@@ -30,6 +30,7 @@ library(patchwork)
 library(caret)
 library(corrplot)
 library(flextable)
+library(baguette)
 ```
 
 Client ID and Client Secret are required to create and access token that is required to interact with the API. You can set them as system values so we don't have to do provide them each time.
@@ -49,6 +50,7 @@ access_token \<- get_spotify_access_token() #takes ID and SECRET, sends to Spoti
 You can use get_my_saved_tracks() to request all your liked tracks. It would be good if you had at least 150-200 liked tracks so the model has enough data to work with. If you don't have enough liked tracks, you can instead use get_my_recently_played(), and in that case grab at least 500 recently played tracks if you can.
 
 The Spotify API returns a dataframe of tracks and associated attributes. However, it will only return up to 50 (or 20) tracks at a time, so you will have to make multiple requests. Use a function to combine all your requests in one call.
+
 ```{r}
 Sys.setenv(SPOTIFY_CLIENT_ID = '22120fa7a3ee4f6dbb73fe9378000b6a')
 
@@ -118,7 +120,7 @@ dalilas_tracks <- read.csv('dalila_spotify.csv') |>
   mutate(data_owned_by = as.factor(1)) |> 
   select(-X,-type, -id,-uri,-track_href,-analysis_url)
 
-tracks_merged <- features_0 |> 
+tracks <- features_0 |> 
   bind_rows(dalilas_tracks)
 ```
 
@@ -135,30 +137,30 @@ Inspect the data. Choose two genres you'd like to use for the classification tas
 Let's take a look at your data. Do some exploratory summary stats and visualization.
 
 ```{r}
-names(tracks_merged)
+names(tracks)
+skimr::skim(tracks)
 ```
-
-
 
 For example: What are the most danceable tracks in your dataset? What are some differences in the data between users (Option 1) or genres (Option 2)?
 
 # Top Ten
+
 ```{r}
 # 0 = Guillermo
 #1 = Dalila
-danceability_top_ten <-  tracks_merged |> 
+danceability_top_ten <-  tracks |> 
   select(track_name, danceability, data_owned_by) |> 
   slice_max(n = 10,order_by = danceability)
 
-energy_top_ten <- tracks_merged |> 
+energy_top_ten <- tracks |> 
   select(track_name, energy, data_owned_by) |> 
   slice_max(n = 10,order_by = energy)
 
-valence_top_ten <- tracks_merged |> 
+valence_top_ten <- tracks |> 
   select(track_name, valence, data_owned_by) |> 
   slice_max(n = 10,order_by = valence)
 
-instrument_top_ten <- tracks_merged |> 
+instrument_top_ten <- tracks |> 
   select(track_name, instrumentalness, data_owned_by) |> 
   slice_max(n = 10,order_by = instrumentalness)
 ```
@@ -212,14 +214,10 @@ i10 <- flextable(instrument_top_ten)
 (energy_10 + gen_grob(e10, fit = "width", just = "top", scaling = 'full')) )
 ```
 
-
-
-
-
 ```{r}
 
 # overall distribution in danceability between two
-danceability <- tracks_merged  |> 
+danceability <- tracks  |> 
   gghistogram( x = "danceability", bins = 30,
    add = "mean", rug = TRUE,
    color = "data_owned_by", fill = "data_owned_by",
@@ -229,9 +227,9 @@ danceability <- tracks_merged  |>
 
   
 
-danceabilty_valence <- tracks_merged |> 
+danceabilty_valence <- tracks |> 
   ggplot(aes(x = valence, y = danceability, color = data_owned_by, size = energy)) +
-  scale_size(range = c(0, 6)) +
+  scale_size(range = c(0, 4)) +
   geom_count(alpha = 0.5) +
   labs(x= "Valence", y= "Danceability") +
   ggtitle("Valence vs. Danceability For Merged Datasets") +
@@ -245,7 +243,7 @@ danceabilty_valence + danceability
 
 ```
 
-### **Modeling**
+# **Modeling**
 
 Create two models, a k-nearest neighbor model and a decision tree model that predict whether a track belongs to:
 
@@ -256,11 +254,10 @@ Create two models, a k-nearest neighbor model and a decision tree model that pre
 Then validate and compare the performance of the two models you have created.
 
 Make sure to use appropriate resampling to select the best version of each algorithm to compare and some appropriate visualization of your results.
+# Preprocessing Recipe
+```{r split data}
 
-# KNN
-```{r}
-
-tracks_merged <- tracks_merged |> 
+tracks_merged <- tracks |> 
   select(-track_name)
 
 # Create training (70%) and test (30%) sets for the 
@@ -271,60 +268,43 @@ spotify_test  <- testing(spotify_split)
 spotify_split
 ```
 
-```{r}
-knn_rec <- recipe(data_owned_by ~ ., data = spotify_train) |>
+```{r recipe}
+spotify_rec <- recipe(data_owned_by ~ ., data = spotify_train) |>
   step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) |> 
   step_normalize(all_numeric(), -all_outcomes()) |> 
   prep() 
 
-baked_churn <- bake(knn_rec,spotify_train)
-
 ```
 
-```{r}
-baked_test <- bake(knn_rec, spotify_test)
+# KNN
+
+## Specify the k-nearest neighbor model
+
+```{r spec_with_tuning}
+knn_spec_tune <- nearest_neighbor(neighbors = tune())  |>  
+  set_mode("classification") |> 
+  set_engine("kknn")   
+  
+# Check the model
+knn_spec_tune
 ```
 
-# Specify the k-nearest neighbor model
+# Fit specification
 
-```{r}
-knn_spec <- nearest_neighbor()  |>  
-  set_engine("kknn")  |>  
-  set_mode("classification")
-```
-
-```{r}
-knn_fit <- knn_spec %>% 
+```{r fit}
+knn_fit <- knn_spec_tune %>% 
   fit(data_owned_by ~. , data = spotify_train)
 ```
 
-```{r}
-baked_test <- bake(knn_rec, spotify_test)
-```
+## Resampling
+
 ```{r}
 set.seed(123)
-# 5-fold CV on the training dataset
-cv_folds <- spotify_train |>  vfold_cv(v = 5)
+# 10-fold CV on the training dataset
+cv_folds <- spotify_train |>  vfold_cv(v = 10)
 ```
 
-```{r}
-knn_workflow <- workflow() |> 
-    add_model(knn_spec) |> 
-    add_recipe(knn_rec) 
-```
-
-```{r}
-knn_res <- knn_workflow |> 
-  fit_resamples(
-    resamples = cv_folds,
-    control = control_resamples(save_pred = TRUE)
-  )
-```
-
-```{r}
-# Check the performance
-knn_res |> collect_metrics()
-```
+## Specification tuning
 
 ```{r}
 # Define our KNN model with tuning
@@ -344,8 +324,10 @@ knn_spec_tune
 wf_knn_tune <- 
     workflow() |> 
     add_model(knn_spec_tune) |> 
-    add_recipe(knn_rec)
+    add_recipe(spotify_rec)
 ```
+
+## Fit workflow
 
 ```{r}
 # Fit the workflow on our predefined folds and hyperparameters
@@ -379,7 +361,6 @@ churn_pred <-  final_fit |> predict(new_data = spotify_test)
 churn_pred |> head()
 ```
 
-
 ```{r}
 # Write over 'final_fit' with this last_fit() approach
 final_fit <-  final_wf |> last_fit(spotify_split)
@@ -387,19 +368,160 @@ final_fit <-  final_wf |> last_fit(spotify_split)
 final_fit|> collect_metrics()
 ```
 
-1. k-nearest neighbor
-2. decision tree
+# Decision tree
+# Preprocessing Recipe
+```{r split data}
 
 
-3. bagged tree
-   - bag_tree()
-   - Use the "times =" argument when setting the engine during model specification to specify the number of         trees. The rule of thumb is that 50-500 trees is usually sufficient.  The bottom of that range should          be sufficient here.  
-4. random forest
-   - rand_forest()
-   - m_try() is the new hyperparameter of interest for this type of model.  Make sure to include it in your         tuning process
-Go through the modeling process for each model:
-Preprocessing. You can use the same recipe for all the models you create.
-Resampling. Make sure to use appropriate resampling to select the best version created by each algorithm.
-Tuning. Find the best values for each hyperparameter (within a reasonable range).
-Compare the performance of the four final models you have created.  
-Use appropriate performance evaluation metric(s) for this classification task. A table would be a good way to display your comparison.  Use at least one visualization illustrating your model results.
+# Create training (70%) and test (30%) sets for the 
+set.seed(123)  # for reproducibility (random sample)
+spotify_split <- initial_split(tracks_merged, prop = 0.70)
+spotify_train <- training(spotify_split)
+spotify_test  <- testing(spotify_split)
+spotify_split
+```
+
+```{r recipe}
+spotify_rec <- recipe(data_owned_by ~ ., data = spotify_train) |>
+  step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) |> 
+  step_normalize(all_numeric(), -all_outcomes()) |> 
+  prep() 
+
+```
+
+```{r tree_specification}
+#new spec, tell the model that we are tuning hyperparams
+tree_spec_tune <- decision_tree(
+  cost_complexity = tune(),
+  tree_depth = tune(),
+  min_n = tune()) |>
+  set_engine('rpart') |>
+  set_mode('classification')
+
+tree_grid <- grid_regular(cost_complexity(), tree_depth(), min_n(), levels = 5)
+
+tree_grid
+```
+
+```{r workflow_tree}
+wf_tree_tune <- workflow() |> 
+  add_recipe(spotify_rec) |> 
+  add_model(tree_spec_tune) 
+```
+
+```{r resampling}
+#set up k-fold cv. This can be used for all the algorithms
+decision_cv = spotify_train |> 
+  vfold_cv(v=10) #10 standard default lower for computational resources
+decision_cv
+```
+
+```{r}
+doParallel::registerDoParallel() #build trees in parallel
+#200s
+tree_rs <- tune_grid(
+  tree_spec_tune, #specification
+  data_owned_by~.,        # model function
+  resamples = decision_cv, #resample specificaton
+  grid = tree_grid, #parameters to try
+  metrics = metric_set(accuracy) #asses which combination of parameters is best
+)
+tree_rs
+```
+
+```{r}
+#Use autoplot() to examine how different parameter configurations relate to accuracy
+autoplot(tree_rs) + theme_pubr()
+```
+
+```{r select_hyperparam}
+show_best <- show_best(tree_rs)
+select_best <- select_best(tree_rs)
+
+best <- flextable(show_best)
+show <- flextable(select_best)
+
+best  
+show
+```
+
+```{r final_tree_spec}
+final_tree <- finalize_model(tree_spec_tune, 
+                             select_best(tree_rs))
+final_tree
+```
+
+This model has not been fit yet though.
+
+```{r final_tree_fit}
+final_tree_fit <- last_fit(final_tree,
+                           data_owned_by~.,
+                           spotify_split)
+
+predict <- as.data.frame(final_tree_fit$.predictions) |> select(-.config)
+
+flextable(predict) |>  theme_zebra()
+```
+
+# Bagged tree
+
+-   bag_tree()
+-   Use the "times =" argument when setting the engine during model specification to specify the number of trees. The rule of thumb is that 50-500 trees is usually sufficient. The bottom of that range should be sufficient here.
+# Preprocessing Recipe
+```{r split data}
+
+
+# Create training (70%) and test (30%) sets for the 
+set.seed(123)  # for reproducibility (random sample)
+spotify_split <- initial_split(tracks_merged, prop = 0.70)
+spotify_train <- training(spotify_split)
+spotify_test  <- testing(spotify_split)
+spotify_split
+```
+
+```{r recipe}
+spotify_rec <- recipe(data_owned_by ~ ., data = spotify_train) |>
+  step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) |> 
+  step_normalize(all_numeric(), -all_outcomes()) |> 
+  prep() 
+
+```
+
+
+```{r}
+bag_cv <- spotify_train %>% vfold_cv(v=5)
+
+bag_spec_tune <- bag_tree(cost_complexity = tune(),
+                          tree_depth = tune(),
+                          min_n = tune()) %>%
+  set_mode("classification") %>%
+  set_engine("rpart", times = 50)
+
+bag_grid <-
+  grid_regular(cost_complexity(), tree_depth(), min_n(), levels = 5)
+bag_grid
+```
+
+
+```{r}
+wf_bag_tune <- workflow() %>%
+  add_recipe(spotify_rec) %>%
+  add_model(bag_spec_tune)
+wf_bag_tune
+```
+
+
+```{r}
+doParallel::registerDoParallel() #build trees in parallel
+bag_rs <- tune_grid(
+  wf_bag_tune,
+  data_owned_by ~.,
+  resamples = bag_cv, #resamples to use
+  grid = bag_grid,
+  metrics = metric_set(accuracy))
+```
+
+4.  random forest
+    -   rand_forest()
+    -   m_try() is the new hyperparameter of interest for this type of model. Make sure to include it in your tuning process Go through the modeling process for each model: Preprocessing. You can use the same recipe for all the models you create. Resampling. Make sure to use appropriate resampling to select the best version created by each algorithm. Tuning. Find the best values for each hyperparameter (within a reasonable range). Compare the performance of the four final models you have created.\
+        Use appropriate performance evaluation metric(s) for this classification task. A table would be a good way to display your comparison. Use at least one visualization illustrating your model results.
