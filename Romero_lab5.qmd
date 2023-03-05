@@ -1,8 +1,7 @@
 ---
-title: "Lab5"
-author: "Guillermo Romero"
-date: "2023-02-07"
-output: pdf_document
+title: "Guillermo Romero"
+format: pdf
+editor: visual
 ---
 
 ```{r}
@@ -20,7 +19,10 @@ library(baguette)
 library(ranger)
 library(ggplot2)
 library(vip)
+
 ```
+
+# Data Wrangling
 
 ```{r}
 Sys.setenv(SPOTIFY_CLIENT_ID = '22120fa7a3ee4f6dbb73fe9378000b6a')
@@ -54,7 +56,6 @@ get_all_tracks <- function(access_token, limit = 50, offset = 0, market = 'US') 
 }
 
 
-
 ```
 
 ```{r}
@@ -62,7 +63,6 @@ all_tracks <- get_all_tracks(access_token)
 ```
 
 ```{r}
-
 feature1 <-  get_track_audio_features(all_tracks$track.id[1:100])
 feature2 <- get_track_audio_features(all_tracks$track.id[101:200])
 feature3 <- get_track_audio_features(all_tracks$track.id[201:300])
@@ -72,6 +72,7 @@ track_features <- bind_rows(feature1,feature2, feature3, feature4) |>
   bind_cols(track_name = all_tracks$track.name)
 
 #write_csv(track_features, 'track_features.csv')
+
 ```
 
 ```{r}
@@ -91,14 +92,14 @@ tracks <- features_0 |>
   bind_rows(dalilas_tracks)
 ```
 
-## Data Exploration 
+# Data Exploration
 
 ```{r}
 names(tracks)
 skimr::skim(tracks)
 ```
 
-# Top Ten
+### Top Ten
 
 ```{r}
 # 0 = Guillermo
@@ -159,7 +160,6 @@ i10 <- flextable(instrument_top_ten)
 ```
 
 ```{r}
-
 ((valence_10 + gen_grob(v10, fit = "width", just = "top", scaling = 'full')) 
 /
 (instrument_10 + gen_grob(i10, fit = "width", just = "top", scaling = 'full'))  )
@@ -169,8 +169,9 @@ i10 <- flextable(instrument_top_ten)
 (energy_10 + gen_grob(e10, fit = "width", just = "top", scaling = 'full')) )
 ```
 
-```{r}
+### Danceability
 
+```{r}
 # overall distribution in danceability between two
 danceability <- tracks  |> 
   gghistogram( x = "danceability", bins = 30,
@@ -198,12 +199,9 @@ danceabilty_valence + danceability
 
 ```
 
-# **Modeling**
+# KNN
 
-# Preprocessing Recipe
-
-```{r split data}
-
+```{r}
 tracks_merged <- tracks |> 
   select(-track_name)
 
@@ -215,19 +213,14 @@ spotify_test  <- testing(spotify_split)
 spotify_split
 ```
 
-```{r recipe}
+```{r}
 spotify_rec <- recipe(data_owned_by ~ ., data = spotify_train) |>
   step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) |> 
   step_normalize(all_numeric(), -all_outcomes()) |> 
   prep() 
-
 ```
 
-# KNN
-
-## Specify the k-nearest neighbor model
-
-```{r spec_with_tuning}
+```{r}
 knn_spec_tune <- nearest_neighbor(neighbors = tune())  |>  
   set_mode("classification") |> 
   set_engine("kknn")   
@@ -236,22 +229,16 @@ knn_spec_tune <- nearest_neighbor(neighbors = tune())  |>
 knn_spec_tune
 ```
 
-# Fit specification
-
-```{r fit}
+```{r}
 knn_fit <- knn_spec_tune %>% 
   fit(data_owned_by ~. , data = spotify_train)
 ```
-
-## Resampling
 
 ```{r}
 set.seed(123)
 # 10-fold CV on the training dataset
 cv_folds <- spotify_train |>  vfold_cv(v = 10)
 ```
-
-## Specification tuning
 
 ```{r}
 # Define our KNN model with tuning
@@ -263,7 +250,6 @@ knn_spec_tune <-
 
 # Check the model
 knn_spec_tune
-
 ```
 
 ```{r}
@@ -273,8 +259,6 @@ wf_knn_tune <-
     add_model(knn_spec_tune) |> 
     add_recipe(spotify_rec)
 ```
-
-## Fit workflow
 
 ```{r}
 # Fit the workflow on our predefined folds and hyperparameters
@@ -295,7 +279,6 @@ final_wf
 ```
 
 ```{r}
-
 # Fitting our final workflow
 final_fit <- final_wf|> fit(data = spotify_train)
 # Examine the final workflow
@@ -315,13 +298,9 @@ final_fit <-  final_wf |> last_fit(spotify_split)
 knn_perf <- final_fit|> collect_metrics()
 ```
 
-# Decision tree
+# Decision Tree
 
-# Preprocessing Recipe
-
-```{r split}
-
-
+```{r}
 # Create training (70%) and test (30%) sets for the 
 set.seed(123)  # for reproducibility (random sample)
 spotify_split <- initial_split(tracks_merged, prop = 0.70)
@@ -337,7 +316,7 @@ spotify_rec <- recipe(data_owned_by ~ ., data = spotify_train) |>
   prep() 
 ```
 
-```{r tree_specification}
+```{r}
 #new spec, tell the model that we are tuning hyperparams
 tree_spec_tune <- decision_tree(
   cost_complexity = tune(),
@@ -351,30 +330,34 @@ tree_grid <- grid_regular(cost_complexity(), tree_depth(), min_n(), levels = 5)
 tree_grid
 ```
 
-```{r workflow_tree}
+```{r}
 wf_tree_tune <- workflow() |> 
   add_recipe(spotify_rec) |> 
   add_model(tree_spec_tune) 
 ```
 
-```{r resampling}
+```{r}
 #set up k-fold cv. This can be used for all the algorithms
 decision_cv = spotify_train |> 
   vfold_cv(v=10) #10 standard default lower for computational resources
-
 ```
 
 ```{r}
 doParallel::registerDoParallel() #build trees in parallel
 #200s
 tree_rs <- tune_grid(
-  tree_spec_tune, #specification
-  data_owned_by~.,        # model function
-  resamples = decision_cv, #resample specificaton
-  grid = tree_grid, #parameters to try
+  tree_spec_tune,
+  #specification
+  data_owned_by ~ .,
+  # model function
+  resamples = decision_cv,
+  #resample specificaton
+  grid = tree_grid,
+  #parameters to try
   metrics = metric_set(accuracy) #asses which combination of parameters is best
 )
 tree_rs
+
 ```
 
 ```{r}
@@ -382,7 +365,7 @@ tree_rs
 autoplot(tree_rs) + theme_pubr()
 ```
 
-```{r select_hyperparam}
+```{r}
 show_best <- show_best(tree_rs)
 select_best <- select_best(tree_rs)
 
@@ -393,13 +376,13 @@ best
 show
 ```
 
-```{r final_tree_spec}
+```{r}
 final_tree <- finalize_model(tree_spec_tune, 
                              select_best(tree_rs))
 final_tree
 ```
 
-```{r final_tree_fit}
+```{r}
 final_tree_fit <- last_fit(final_tree,
                            data_owned_by~.,
                            spotify_split)
@@ -416,9 +399,9 @@ tree_perf <- final_tree_fit %>%
 tree_perf
 ```
 
-# Bagged tree
+# Bagged Tree
 
-```{r splits}
+```{r}
 # Create training (70%) and test (30%) sets for the 
 set.seed(123)  # for reproducibility (random sample)
 spotify_split <- initial_split(tracks_merged, prop = 0.70)
@@ -427,12 +410,11 @@ spotify_test  <- testing(spotify_split)
 spotify_split
 ```
 
-```{r rec}
+```{r}
 spotify_rec <- recipe(data_owned_by ~ ., data = spotify_train) |>
   step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) |> 
   step_normalize(all_numeric(), -all_outcomes()) |> 
   prep() 
-
 ```
 
 ```{r}
@@ -478,8 +460,6 @@ best_bag_mod <- select_best(bag_rs, "accuracy")
 # fit the best model to the training data
 final_bag <- finalize_workflow(wf_bag_tune, best_bag_mod) %>% 
   fit(data = spotify_train)
-
-
 ```
 
 ```{r}
@@ -491,8 +471,6 @@ test_pred <- final_bag %>%
 # evaluate the accuracy of the fitted model on the test set
 bag_perf <- test_pred %>% 
   metrics(truth = data_owned_by, estimate = .pred_class)
-
-
 ```
 
 # Random Forest
@@ -518,9 +496,6 @@ spotify_rec <- recipe(data_owned_by ~ ., data = spotify_train) %>%
 ```
 
 ```{r}
-
-
-
 # Create a Random Forest specification
 rf_spec <-
   rand_forest(mtry = tune(),
@@ -533,8 +508,6 @@ rf_spec <-
 rf_workflow <- workflow() %>%
   add_recipe(spotify_rec) %>%
   add_model(rf_spec)
-
-
 ```
 
 ```{r}
@@ -547,12 +520,12 @@ rf_res <-
             grid = 25,
             control = control_grid(save_pred = TRUE),
             metrics = metric_set(accuracy))
-#> i Creating pre-processing data to finalize unknown parameter: mtry              
+#> i Creating pre-processing data to finalize unknown parameter: mtry 
 ```
 
 ```{r}
 rf_res |> collect_metrics()
-        
+
 ```
 
 ```{r}
@@ -611,23 +584,33 @@ last_rf_fit |>
 
 ```{r}
 rf_performance <- rf_metrics|> 
-  select(rf_accuracy = .estimate) |> 
+  select(performance = .estimate, .metric) |> 
+  mutate(model = 'Random Forest') |> 
   slice(1:1)
 
 tree_performance <- tree_perf |> 
-  select(tree_accuracy = .estimate) |> 
+  select(performance = .estimate, .metric) |> 
+  mutate(model = 'Decision tree') |> 
   slice(1:1)
 
 bag_performance <- bag_perf |> 
-  select(bag_accuracy = .estimate) |> 
+  select(performance = .estimate, .metric) |> 
+  mutate(model = 'Bagged Tree') |> 
   slice(1:1)
 
 knn_performance <- knn_perf |> 
-  select(knn_accuracy = .estimate) |> 
+  select(performance = .estimate, .metric) |> 
+  mutate(model = 'KNN') |> 
   slice(1:1)
 
-perfomance_metrics <- bind_cols(rf_performance,tree_performance, bag_performance, knn_performance)
+perfomance_metrics <- bind_rows(rf_performance,tree_performance, bag_performance, knn_performance) |> 
+  mutate(model = as.factor(model))
 
 
-flextable(perfomance_metrics)
+flextable(perfomance_metrics) |>  theme_booktabs()
+```
+
+```{r}
+ggplot(perfomance_metrics, aes(x = model, y = performance)) +
+  geom_col()+ theme_pubr()
 ```
