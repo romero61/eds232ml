@@ -47,6 +47,7 @@ histogram(eel_data$Angaus)
 ### Split and Resample
 
 Split the joined data from above into a training and test set, stratified by outcome score. Use 10-fold CV to resample the training set, stratified by Angaus
+
 ```{r}
 # Specify the outcome variable as a factor
 eel_data$Angaus <- factor(eel_data$Angaus)
@@ -76,7 +77,6 @@ eel_recipe <- recipe(Angaus ~ ., data = data_train) %>%
 eel_recipe
 ```
 
-
 ## Tuning XGBoost
 
 ### Tune Learning Rate
@@ -86,8 +86,10 @@ Following the XGBoost tuning strategy outlined on Monday, first we conduct tunin
 1.  Create a model specification using {xgboost} for the estimation
 
 -   Only specify one parameter to tune()
+
 ```{r}
 xgb_spec <- boost_tree(
+  mtry = 5, # Fixed value for mtry
   trees = 1000,  # A large number of trees to start with
   tree_depth = 4,  # Maximum depth of each tree
   min_n = 10,  # Minimum number of observations in each terminal node
@@ -101,14 +103,18 @@ xgb_spec <- boost_tree(
   set_mode("classification")
 
 ```
+
 2.  Set up a grid to tune your model by using a range of learning rate parameter values: expand.grid(learn_rate = seq(0.0001, 0.3, length.out = 30))
+
 ```{r}
 # Set up a grid for tuning the learning rate parameter
 learn_rate_grid <- expand.grid(
   learn_rate = seq(0.0001, 0.3, length.out = 30)
 )
 ```
+
 -   Use appropriate metrics argument(s) - Computational efficiency becomes a factor as models get more complex and data get larger. Record the time it takes to run. Do this for each tuning phase you run.You could use {tictoc} or Sys.time().
+
 ```{r}
 # Create a time tracker
 tic()
@@ -128,39 +134,48 @@ toc()
 ```
 
 3.  Show the performance of the best models and the estimates for the learning rate parameter values associated with each.
+
 ```{r}
-xgb_res %>%
-  show_best(metric = "roc_auc", n = 5)
+# Show the best models and their associated tree parameter values
+best <- show_best(xgb_res, "roc_auc", n = 10)
+theme_box(flextable(best) )
+
+```
+
+```{r}
+theme_box(flextable(best[1,]) )
 ```
 
 ### Tune Tree Parameters
 
 1.  Create a new specification where you set the learning rate (which you already optimized) and tune the tree parameters.
+
 ```{r}
-# Create a new specification with the optimal learning rate 0.01044138	roc_auc	binary	0.8378401	10	
+# Create a new specification with the optimal learning rate 0.02078276	roc_auc	binary	0.8413513	10	
 xgb_spec2 <- boost_tree(
+  mtry = tune(),
   trees = tune(),  # Tune the number of trees
   tree_depth = tune(),  # Tune the maximum depth of each tree
   min_n = tune(),  # Tune the minimum number of observations in each terminal node
   loss_reduction = tune(),  # Tune the minimum loss reduction required to make a further partition on a leaf node
   sample_size = 0.7,  # Fraction of observations to sample for each tree
   stop_iter = 10,  # Early stopping parameter
-  learn_rate = 0.01044138  # Set the optimal learning rate
+  learn_rate = 0.02078276  # Set the optimal learning rate
 ) %>% 
   set_engine("xgboost") %>% 
   set_mode("classification")
 ```
-
 
 2.  Set up a tuning grid. This time use grid_max_entropy() to get a representative sampling of the parameter space
 
 ```{r}
 # Set up a grid to tune the tree parameters
 tree_grid <- grid_max_entropy(
-  trees(),
-  tree_depth(),
-  min_n(),
-  loss_reduction(),
+  mtry(range = c(5, 20)),
+  trees(range = c(100, 2000)),
+  tree_depth(range = c(3, 10)),
+  min_n(range = c(1, 20)),
+  loss_reduction(range = c(0, 0.1)),
   size = 100
 )
 
@@ -176,6 +191,7 @@ xgb_res2 <- tune_grid(
 ```
 
 3.  Show the performance of the best models and the estimates for the tree parameter values associated with each.
+
 ```{r}
 # Show the best models and their associated tree parameter values
 best2 <- show_best(xgb_res2, "roc_auc", n = 10)
@@ -194,29 +210,32 @@ theme_box(flextable(best2[1,]) )
 ```{r}
 # Create a new specification with the optimal learning rate and tree parameters
 xgb_spec3 <- boost_tree(
-  trees = 1420,  #  the number of trees
+  mtry = 7,
+  trees = 1122,  #  the number of trees
   tree_depth = 8,  #  the maximum depth of each tree
-  min_n = 2,  # Tune the minimum number of observations in each terminal node
-  loss_reduction = 0.00000339272,  #  the minimum loss reduction required to make a further partition on a leaf node
+  min_n = 1,  # Tune the minimum number of observations in each terminal node
+  loss_reduction = 1.108893,  #  the minimum loss reduction required to make a further partition on a leaf node
   sample_size = tune(),  # Fraction of observations to sample for each tree
   stop_iter = tune(),  # Early stopping parameter
-  learn_rate = 0.01044138  # Set the optimal learning rate
+  learn_rate = 0.02078276  # Set the optimal learning rate
 ) %>% 
   set_engine("xgboost") %>% 
   set_mode("classification")
 ```
 
-
 2.  Set up a tuning grid. Use grid_max_entropy() again.
+
 ```{r}
 # Set up a grid to tune the stochastic parameters
+# 
+
 stochastic_grid <- grid_max_entropy(
-  sample_size = seq(0.1, 1, length.out = 10),
-  stop_iter = seq(5, 50, length.out = 10)
-)
+  sample_size( range = c(0, 1)),
+  stop_iter(c(5, 50)
+))
 
 # Tune the model using cross-validation
-xgb_res2 <- tune_grid(
+xgb_res3 <- tune_grid(
   xgb_spec3,
   resamples = cv_folds,
   grid = stochastic_grid ,
@@ -228,17 +247,108 @@ xgb_res2 <- tune_grid(
 
 3.  Show the performance of the best models and the estimates for the tree parameter values associated with each.
 
+```{r}
+# Show the best models and their associated tree parameter values
+best3 <- show_best(xgb_res3, "roc_auc", n = 10)
+theme_box(flextable(best3) )
+
+```
+
+```{r}
+theme_box(flextable(best3[1,]) )
+```
+
 ## Finalize workflow and make final prediction
 
 1.  Assemble your final workflow will all of your optimized parameters and do a final fit.
 
+```{r}
+xgb_spec_final <- boost_tree(
+  mtry = 7,
+  trees = 1122,  #  the number of trees
+  tree_depth = 8,  #  the maximum depth of each tree
+  min_n = 1,  #  the minimum number of observations in each terminal node
+  loss_reduction = 1.108893,  #  the minimum loss reduction required to make a further partition on a leaf node
+  sample_size = 1,  # Fraction of observations to sample for each tree
+  stop_iter = 44,  # Early stopping parameter
+  learn_rate = 0.02078276  # Set the optimal learning rate
+) %>% 
+  set_engine("xgboost") %>% 
+  set_mode("classification")
+```
+
+```{r}
+# Set up the final workflow
+xgb_wf_final <- workflow() %>%
+  add_model(xgb_spec_final) %>%
+  add_recipe(eel_recipe)
+
+# Fit the model using 10-fold cross-validation
+set.seed(123)
+final_fit <- xgb_wf_final %>%
+  fit_resamples(
+    resamples = vfold_cv(data_train, v = 10),
+    metrics = metric_set(roc_auc, accuracy),
+    control = control_resamples(save_pred = TRUE)
+  )
+
+# Get the average performance across all folds
+final_perf <- final_fit %>%
+  collect_metrics() 
+
+theme_box(flextable(final_perf) )
+
+
+
+```
+
 2.  How well did your model perform? What types of errors did it make?
+
+```{r}
+# Compute the confusion matrix for the final model
+final_pred <- final_fit %>%
+  collect_predictions()
+
+conf_mat(final_pred, truth = Angaus, estimate = .pred_class)
+
+```
+
+**The confusion matrix shows the classification results of the final model. There were 515 true negatives (species not present and correctly classified), 77 false negatives (species present but wrongly classified as absent), 43 false positives (species absent but wrongly classified as present), and 64 true positives (species present and correctly classified) in the test dataset. 
+
+For the accuracy metric, the mean value is 0.828, which means that on average, the model correctly predicts the presence or absence of the eel species in 82.8% of cases. The standard error is 0.0175, indicating some variation in performance across the 10 folds.
+
+For the ROC AUC metric, the mean value is 0.867, which means that the model has good discriminatory power to distinguish between positive and negative cases. The standard error is 0.0150, indicating relatively low variability in performance across the 10 folds.**
 
 ## Fit your model the evaluation data and compare performance
 
 1.  Now fit your final model to the big dataset: data/eval.data.csv
+```{r}
+eel_eval_data <- read_csv(here('eel.eval.data.csv'))
+```
+```{r}
+eel_eval_data$Angaus_obs <- factor(eel_eval_data$Angaus_obs)
+
+final_fit_eval <- xgb_spec_final %>%
+  fit(Angaus_obs ~ ., data = eel_eval_data)
+
+xgb_final_pred <- predict(final_fit_eval, eel_eval_data)
+
+```
 
 2.  How does your model perform on this data?
+```{r}
+conf_mat(truth = as.numeric(eel_eval_data$Angaus_obs) - 1, estimate = xgb_final_pred)
+
+```
+
+
+```{r}
+# Compute the confusion matrix for the final model
+eval_pred <- final_fit_eval %>%
+  collect_predictions()
+
+conf_mat(final_pred, truth = Angaus, estimate = .pred_class)
+```
 
 3.  How do your results compare to those of Elith et al.?
 
