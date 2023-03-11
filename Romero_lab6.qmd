@@ -1,8 +1,8 @@
 ---
 title: "Lab6"
-author: {Student Name}
+author: 'Guillermo Romero'
 date: "2023-03-01"
-output: html_document
+output: pdf_document
 ---
 
 ```{r}
@@ -22,6 +22,7 @@ library(vip)
 library(here)
 library(tictoc)
 library(xgboost)
+library(vip)
 ```
 
 ## Case Study Eel Species Distribution Modeling
@@ -35,7 +36,8 @@ Grab the model training data set from the class Git:
 data/eel.model.data.csv
 
 ```{r}
-eel_data <- read_csv(here('eel.model.data.csv'))
+eel_data <- read_csv(here('eel.model.data.csv')) |>
+  select(-Site)
 ```
 
 ```{r}
@@ -89,12 +91,12 @@ Following the XGBoost tuning strategy outlined on Monday, first we conduct tunin
 
 ```{r}
 xgb_spec <- boost_tree(
-  mtry = 13, # Fixed value for mtry
+  mtry = 12, # Fixed value for mtry
   trees = 1000,  # A large number of trees to start with
   tree_depth = 4,  # Maximum depth of each tree
   min_n = 10,  # Minimum number of observations in each terminal node
   loss_reduction = 0,  # Minimum loss reduction required to make a further partition on a leaf node
-  sample_size = 0.7,  # Fraction of observations to sample for each tree
+  sample_size = 1,  #The size of the data set used for modeling within an iteration of the modeling algorithm, such as stochastic gradient boosting.
   stop_iter = 10,  # Early stopping parameter
   # update the learning rate parameter to be tuned
   learn_rate = tune()
@@ -158,7 +160,7 @@ xgb_spec2 <- boost_tree(
   tree_depth = tune(),  # Tune the maximum depth of each tree
   min_n = tune(),  # Tune the minimum number of observations in each terminal node
   loss_reduction = tune(),  # Tune the minimum loss reduction required to make a further partition on a leaf node
-  sample_size = 0.7,  # Fraction of observations to sample for each tree
+  sample_size = 1,  # The size of the data set used for modeling within an iteration of the modeling algorithm, such as stochastic gradient boosting.
   stop_iter = 10,  # Early stopping parameter
   learn_rate = 0.01044138  # Set the optimal learning rate
 ) %>% 
@@ -171,7 +173,7 @@ xgb_spec2 <- boost_tree(
 ```{r}
 # Set up a grid to tune the tree parameters
 tree_grid <- grid_max_entropy(
-  mtry(range = c(5, 20)),
+  mtry(range = c(1, 12)),
   trees(range = c(100, 2000)),
   tree_depth(range = c(3, 10)),
   min_n(range = c(1, 20)),
@@ -206,19 +208,25 @@ theme_box(flextable(best2))
 
 ```
 
+```{r}
+theme_box(flextable(best_pr_auc2))
+
+```
+
 ### Tune Stochastic Parameters
 
 1.  Create a new specification where you set the learning rate and tree parameters (which you already optimized) and tune the stochastic parameters.
 
 ```{r}
 # Create a new specification with the optimal learning rate and tree parameters
+# 
 xgb_spec3 <- boost_tree(
-  mtry = 19,
-  trees = 816,  #  the number of trees
+  mtry = 2,
+  trees = 574,  #  the number of trees
   tree_depth = 7,  #  the maximum depth of each tree
   min_n = 1,  # the minimum number of observations in each terminal node
-  loss_reduction = 1.130081,  #  the minimum loss reduction required to make a further partition on a leaf node
-  sample_size = tune(),  # Fraction of observations to sample for each tree
+  loss_reduction = 1.119450,  #  the minimum loss reduction required to make a further partition on a leaf node
+  sample_size = tune(),  # The size of the data set used for modeling within an iteration of the modeling algorithm, such as stochastic gradient boosting.
   stop_iter = tune(),  # Early stopping parameter
   learn_rate = 0.01044138  # Set the optimal learning rate
 ) %>% 
@@ -270,13 +278,13 @@ theme_box(flextable(best3))
 
 ```{r}
 xgb_spec_final <- boost_tree(
-  mtry = 19,
-  trees = 816,  #  the number of trees
+  mtry = 2,
+  trees = 574,  #  the number of trees
   tree_depth = 7,  #  the maximum depth of each tree
   min_n = 1,  # the minimum number of observations in each terminal node
-  loss_reduction = 1.130081,  #  the minimum loss reduction required to make a further partition on a leaf node
-  sample_size = 1,  # Fraction of observations to sample for each tree
-  stop_iter = 8,  # Early stopping parameter
+  loss_reduction = 1.119450,  #  the minimum loss reduction required to make a further partition on a leaf node
+  sample_size = 1,  # The size of the data set used for modeling within an iteration of the modeling algorithm, such as stochastic gradient boosting.
+  stop_iter = 15,  # Early stopping parameter
   learn_rate = 0.01044138  # Set the optimal learning rate
 ) %>% 
   set_engine("xgboost") %>% 
@@ -291,11 +299,11 @@ xgb_wf_final <- workflow() %>%
   add_recipe(eel_recipe)
 
 # Fit the model using 10-fold cross-validation
-set.seed(545)
+
 tic()
 final_fit <- xgb_wf_final %>%
   fit_resamples(
-    resamples = vfold_cv(data_train, v = 10),
+    resamples = cv_folds,
     metrics = metric_set(roc_auc,pr_auc, accuracy),
     control = control_resamples(save_pred = TRUE)
   )
@@ -307,79 +315,162 @@ final_perf <- final_fit %>%
 theme_box(flextable(final_perf) )
 
 
-
 ```
 
 ```{r}
-# Get best model from tuning results
+eel_recipe_test <- recipe(Angaus ~ ., data = data_test) %>%
+  step_normalize(all_numeric(), -all_outcomes()) %>%
+  step_dummy(all_nominal(), -all_outcomes())
 
-eel_predict <- final_fit |> 
-  predict(data = data_test)
+
+xgb_wf_final_test <- workflow() %>%
+  add_model(xgb_spec_final) %>%
+  add_recipe(eel_recipe_test)
+
+tic()
+final_fit_test <- xgb_wf_final_test %>%
+  fit_resamples(
+    resamples = vfold_cv(data_test, v = 10, strata = Angaus),
+    metrics = metric_set(roc_auc,pr_auc, accuracy),
+    control = control_resamples(save_pred = TRUE)
+  )
+toc()
+# Get the average performance across all folds
+final_perf_test <- final_fit_test %>%
+  collect_metrics() 
+
+theme_box(flextable(final_perf_test) )
+
 
 ```
 
 2.  How well did your model perform? What types of errors did it make?
 
 ```{r}
-# Compute the confusion matrix for the final model
+# Compute the confusion matrix for the final model training data
 final_pred <- final_fit %>%
   collect_predictions()
 
 conf_mat(final_pred, truth = Angaus, estimate = .pred_class)
 
+
+
 ```
 
 ```{r}
+# Compute the confusion matrix for the final model test data
+final_pred_test <- final_fit_test %>%
+  collect_predictions()
 
-# Final prediction on test data
-final_pred_test <- predict(final_fit, data_test)
+cm_test <- conf_mat(final_pred_test, truth = Angaus, estimate = .pred_class)
+
+autoplot(cm_test, type = "mosaic") +
+autoplot(cm_test, type = "heatmap")
+
 ```
 
-\*\*The confusion matrix shows the classification results of the final model. There were 515 true negatives (species not present and correctly classified), 77 false negatives (species present but wrongly classified as absent), 43 false positives (species absent but wrongly classified as present), and 64 true positives (species present and correctly classified) in the test dataset.
+Running the model on the test data
 
-For the accuracy metric, the mean value is 0.828, which means that on average, the model correctly predicts the presence or absence of the eel species in 82.8% of cases. The standard error is 0.0175, indicating some variation in performance across the 10 folds.
+\*\*The confusion matrix shows the classification results of the final model. There were 26 true negatives (species not present and correctly classified), 11 false positives (species present but wrongly classified as absent), 35 false negatives (species absent but wrongly classified as present), and 229 true positives (species present and correctly classified) in the test dataset.
 
-For the ROC AUC metric, the mean value is 0.867, which means that the model has good discriminatory power to distinguish between positive and negative cases. The standard error is 0.0150, indicating relatively low variability in performance across the 10 folds.\*\*
+For the accuracy metric, the mean value is\
+0.8470968, which means that on average, the model correctly predicts the presence or absence of the eel species in 84.7% of cases. The standard error is 0.015141238, indicating some variation in performance across the 10 folds.
+
+For the ROC AUC metric, the mean value is 0.8818452, which means that the model has good discriminatory power to distinguish between positive and negative cases. The standard error is 0.019236512, indicating relatively low variability in performance across the 10 folds.\*\*
+
+For the PR AUC metric, the mean value is 0.9676901, which means that the model has very good precision-recall tradeoff, and can achieve high precision while maintaining high recall or vice versa. The standard error is 0.006031429, indicating relatively low variability in performance across the 10 folds. This suggests that the model is consistently able to achieve high precision-recall tradeoff across different test sets.
 
 ## Fit your model the evaluation data and compare performance
 
 1.  Now fit your final model to the big dataset: data/eval.data.csv
 
 ```{r}
-eel_eval_data <- read_csv(here('eel.eval.data.csv'))
+eel_eval_data <- read_csv(here('eel.eval.data.csv')) 
 ```
 
 ```{r}
 eel_eval_data$Angaus_obs <- factor(eel_eval_data$Angaus_obs)
+```
 
+```{r}
 # Create a recipe for the data
-eel_eval_recipe <- recipe(Angaus ~ ., data = data_train) %>%
+eel_recipe_eval <- recipe(Angaus_obs ~ ., data = eel_eval_data) %>%
   step_normalize(all_numeric(), -all_outcomes()) %>%
   step_dummy(all_nominal(), -all_outcomes())
 
-final_fit_eval <- xgb_spec_final %>%
-  fit(Angaus_obs ~ ., data = eel_eval_data)
 
-xgb_final_pred <- predict(final_fit_eval, eel_eval_data)
+xgb_wf_final_eval <- workflow() %>%
+  add_model(xgb_spec_final) %>%
+  add_recipe(eel_recipe_eval)
 
+tic()
+final_fit_eval <- xgb_wf_final_eval %>%
+  fit_resamples(
+    resamples = vfold_cv(eel_eval_data, v = 10, strata = Angaus_obs),
+    metrics = metric_set(roc_auc,pr_auc, accuracy),
+    control = control_resamples(save_pred = TRUE)
+  )
+toc()
+# Get the average performance across all folds
+final_perf_eval <- final_fit_eval %>%
+  collect_metrics() 
+
+theme_box(flextable(final_perf_eval) )
 ```
 
-2.  How does your model perform on this data?
-
 ```{r}
-conf_mat(truth = as.numeric(eel_eval_data$Angaus_obs) - 1, estimate = xgb_final_pred)
-
-```
-
-```{r}
-# Compute the confusion matrix for the final model
-eval_pred <- final_fit_eval %>%
+# Compute the confusion matrix for the final model test data
+final_pred_eval <- final_fit_eval %>%
   collect_predictions()
 
-conf_mat(final_pred, truth = Angaus, estimate = .pred_class)
+cm_eval <- conf_mat(final_pred_eval, truth = Angaus_obs, estimate = .pred_class)
+
+autoplot(cm_eval, type = "mosaic") +
+autoplot(cm_eval, type = "heatmap")
 ```
+
+Running the model on the test data
+
+\*\*The confusion matrix shows the classification results of the final model. There were 46 true negatives (species not present and correctly classified), 25 false positives (species present but wrongly classified as absent), 61 false negatives (species absent but wrongly classified as present), and 368 true positives (species present and correctly classified) in the test dataset.
+
+For the accuracy metric, the mean value is\
+0.8280432, which means that on average, the model correctly predicts the presence or absence of the eel species in 82.8% of cases. The standard error is 0.011533081, indicating some variation in performance across the 10 folds.
+
+For the ROC AUC metric, the mean value is 0.8706177, which means that the model has good discriminatory power to distinguish between positive and negative cases. The standard error is 0.014172529, indicating relatively low variability in performance across the 10 folds.\*\*
+
+For the PR AUC metric, the mean value is 0.9605975, which means that the model has very good precision-recall tradeoff, and can achieve high precision while maintaining high recall or vice versa. The standard error is 0.005515549, indicating relatively low variability in performance across the 10 folds. This suggests that the model is consistently able to achieve high precision-recall tradeoff across different test sets.
 
 3.  How do your results compare to those of Elith et al.?
 
 -   Use {vip} to compare variable importance
+
+```{r}
+
+# Run your final model
+final_tuned <- tune_grid(
+  object = xgb_wf_final_eval,
+  resamples = vfold_cv(eel_eval_data, v = 10, strata = Angaus_obs),
+  metrics   = metric_set(pr_auc))
+```
+
+```{r}
+final_eval_final <- xgb_wf_final_eval %>%
+    finalize_workflow(select_best(final_tuned, metric = "pr_auc"))
+# Fitting our final workflow
+tic()
+final_fit = final_eval_final %>% fit(data = eel_eval_data)
+toc()
+final_fit %>%
+extract_fit_parsnip() %>%
+vip(geom = "col", num_features = 13)
+```
+
+![Elith, J., et al. "A Working Guide to Boosted Regression Trees." Journal of Animal Ecology, vol. 77, no. 4, July 2008, pp. 802--13, https://doi.org/10.1111/j.1365-2656.2008.01390.x.](elith_vip.png)
+
+Summer air Temperature is the greatest variable of importance in both models. There are some similarities and some drastic differences. My model places US slope as the next highest at 17.5% where they only have it at 6-9%. I then have US Native which was their second most important but the values are similar. The combined method does not reach the same level of importance in my model but the remaining variables have similar values.
+
 -   What do your variable importance results tell you about the distribution of this eel species?
+
+That the distribution is largely dependent on the Summer air temperature, in areas with indigenous forest(proportion) and dependent on the average slope in the upstream. This follows the papers description
+
+> ['The models developed for A. australis are consistent with the known ecology of the species, and accurately describe a species occurring in warm, lowland rivers in agricultural landscapes, often close to the coast but also penetrating inland, and preferring reaches with fine sediments. The modelled interactions highlight the suitability of habitats combining low flood frequencies and warm temperatures']{.smallcaps}

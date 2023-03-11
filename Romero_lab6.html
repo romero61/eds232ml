@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Guillermo Romero">
+<meta name="dcterms.date" content="2023-03-01">
+
+<title>Lab6</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Romero_lab6_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Romero_lab6_files/libs/quarto-html/quarto.js"></script>
+<script src="Romero_lab6_files/libs/quarto-html/popper.min.js"></script>
+<script src="Romero_lab6_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Romero_lab6_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Romero_lab6_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Romero_lab6_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Romero_lab6_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Romero_lab6_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Romero_lab6_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="Romero_lab6_files/libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+<script src="Romero_lab6_files/libs/tabwid-1.1.3/tabwid.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab6</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Guillermo Romero </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 1, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.0     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.1     ✔ tibble    3.1.8
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ────────────────────────────────────── tidymodels 1.0.0 ──
+✔ broom        1.0.3     ✔ rsample      1.1.1
+✔ dials        1.1.0     ✔ tune         1.0.1
+✔ infer        1.0.4     ✔ workflows    1.1.3
+✔ modeldata    1.1.0     ✔ workflowsets 1.0.0
+✔ parsnip      1.0.4     ✔ yardstick    1.1.0
+✔ recipes      1.0.5     
+── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
+✖ scales::discard() masks purrr::discard()
+✖ dplyr::filter()   masks stats::filter()
+✖ recipes::fixed()  masks stringr::fixed()
+✖ dplyr::lag()      masks stats::lag()
+✖ yardstick::spec() masks readr::spec()
+✖ recipes::step()   masks stats::step()
+• Dig deeper into tidy modeling with R at https://www.tmwr.org</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lattice
+
+Attaching package: 'caret'
+
+The following objects are masked from 'package:yardstick':
+
+    precision, recall, sensitivity, specificity
+
+The following object is masked from 'package:purrr':
+
+    lift</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>corrplot 0.92 loaded</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flextable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'flextable'
+
+The following objects are masked from 'package:ggpubr':
+
+    border, font, rotate
+
+The following object is masked from 'package:purrr':
+
+    compose</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(baguette)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ranger)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vip)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'vip'
+
+The following object is masked from 'package:utils':
+
+    vi</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at C:/Users/bsf31/Documents/meds/eds232ml</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tictoc)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xgboost)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'xgboost'
+
+The following object is masked from 'package:dplyr':
+
+    slice</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vip)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="case-study-eel-species-distribution-modeling" class="level2">
+<h2 class="anchored" data-anchor-id="case-study-eel-species-distribution-modeling">Case Study Eel Species Distribution Modeling</h2>
+<p>This week’s lab follows a modeling project described by Elith et al.&nbsp;(2008) (Supplementary Reading)</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>Grab the model training data set from the class Git:</p>
+<p>data/eel.model.data.csv</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>eel_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">'eel.model.data.csv'</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Site)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 1000 Columns: 14
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (1): Method
+dbl (13): Site, Angaus, SegSumT, SegTSeas, SegLowFlow, DSDist, DSMaxSlope, U...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(eel_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Angaus"     "SegSumT"    "SegTSeas"   "SegLowFlow" "DSDist"    
+ [6] "DSMaxSlope" "USAvgT"     "USRainDays" "USSlope"    "USNative"  
+[11] "DSDam"      "Method"     "LocSed"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(eel_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">eel_data</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">1000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Method</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Angaus</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: left;">▇▁▁▁▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SegSumT</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">16.42</td>
+<td style="text-align: right;">1.80</td>
+<td style="text-align: right;">10.10</td>
+<td style="text-align: right;">15.20</td>
+<td style="text-align: right;">16.50</td>
+<td style="text-align: right;">18.10</td>
+<td style="text-align: right;">19.60</td>
+<td style="text-align: left;">▁▂▆▇▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SegTSeas</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">1.40</td>
+<td style="text-align: right;">-4.20</td>
+<td style="text-align: right;">-0.34</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">1.30</td>
+<td style="text-align: right;">4.09</td>
+<td style="text-align: left;">▁▂▇▇▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SegLowFlow</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.09</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">1.04</td>
+<td style="text-align: right;">3.82</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DSDist</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">74.50</td>
+<td style="text-align: right;">80.65</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">10.27</td>
+<td style="text-align: right;">43.52</td>
+<td style="text-align: right;">114.68</td>
+<td style="text-align: right;">411.27</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DSMaxSlope</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.02</td>
+<td style="text-align: right;">3.10</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">1.72</td>
+<td style="text-align: right;">4.57</td>
+<td style="text-align: right;">20.30</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USAvgT</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">-0.41</td>
+<td style="text-align: right;">1.24</td>
+<td style="text-align: right;">-6.00</td>
+<td style="text-align: right;">-1.00</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">1.89</td>
+<td style="text-align: left;">▁▁▂▇▅</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">USRainDays</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.22</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.62</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">1.51</td>
+<td style="text-align: right;">3.30</td>
+<td style="text-align: left;">▆▇▃▁▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USSlope</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">14.49</td>
+<td style="text-align: right;">7.95</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">8.50</td>
+<td style="text-align: right;">13.90</td>
+<td style="text-align: right;">20.52</td>
+<td style="text-align: right;">33.50</td>
+<td style="text-align: left;">▅▇▇▅▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">USNative</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: left;">▅▂▂▃▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DSDam</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: left;">▇▁▁▁▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LocSed</td>
+<td style="text-align: right;">176</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">3.79</td>
+<td style="text-align: right;">1.35</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">4.80</td>
+<td style="text-align: right;">7.00</td>
+<td style="text-align: left;">▃▃▇▆▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">histogram</span>(eel_data<span class="sc">$</span>Angaus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Romero_lab6_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="split-and-resample" class="level3">
+<h3 class="anchored" data-anchor-id="split-and-resample">Split and Resample</h3>
+<p>Split the joined data from above into a training and test set, stratified by outcome score. Use 10-fold CV to resample the training set, stratified by Angaus</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the outcome variable as a factor</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>eel_data<span class="sc">$</span>Angaus <span class="ot">&lt;-</span> <span class="fu">factor</span>(eel_data<span class="sc">$</span>Angaus)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create training (70%) and test (30%) sets for the </span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility (random sample)</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(eel_data, <span class="at">prop =</span> <span class="fl">0.70</span>, <span class="at">strata =</span> Angaus)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>data_train <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>data_test  <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 10-fold CV on the training dataset</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>cv_folds <span class="ot">&lt;-</span> data_train <span class="sc">|&gt;</span>  <span class="fu">vfold_cv</span>(<span class="at">v =</span> <span class="dv">10</span>, <span class="at">strata =</span> Angaus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="preprocess" class="level3">
+<h3 class="anchored" data-anchor-id="preprocess">Preprocess</h3>
+<p>Create a recipe to prepare your data for the XGBoost model. We are interested in predicting the binary outcome variable Angaus which indicates presence or absence of the eel species Anguilla australis</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a recipe for the data</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>eel_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(Angaus <span class="sc">~</span> ., <span class="at">data =</span> data_train) <span class="sc">%&gt;%</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the recipe</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>eel_recipe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>outcome:    1
+predictor: 12</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Centering and scaling for: all_numeric(), -all_outcomes()</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Dummy variables from: all_nominal(), -all_outcomes()</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="tuning-xgboost" class="level2">
+<h2 class="anchored" data-anchor-id="tuning-xgboost">Tuning XGBoost</h2>
+<section id="tune-learning-rate" class="level3">
+<h3 class="anchored" data-anchor-id="tune-learning-rate">Tune Learning Rate</h3>
+<p>Following the XGBoost tuning strategy outlined on Monday, first we conduct tuning on just the learn_rate parameter:</p>
+<ol type="1">
+<li>Create a model specification using {xgboost} for the estimation</li>
+</ol>
+<ul>
+<li>Only specify one parameter to tune()</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>xgb_spec <span class="ot">&lt;-</span> <span class="fu">boost_tree</span>(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="dv">12</span>, <span class="co"># Fixed value for mtry</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">trees =</span> <span class="dv">1000</span>,  <span class="co"># A large number of trees to start with</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tree_depth =</span> <span class="dv">4</span>,  <span class="co"># Maximum depth of each tree</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_n =</span> <span class="dv">10</span>,  <span class="co"># Minimum number of observations in each terminal node</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">loss_reduction =</span> <span class="dv">0</span>,  <span class="co"># Minimum loss reduction required to make a further partition on a leaf node</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample_size =</span> <span class="dv">1</span>,  <span class="co">#The size of the data set used for modeling within an iteration of the modeling algorithm, such as stochastic gradient boosting.</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">stop_iter =</span> <span class="dv">10</span>,  <span class="co"># Early stopping parameter</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># update the learning rate parameter to be tuned</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">learn_rate =</span> <span class="fu">tune</span>()</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"xgboost"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Set up a grid to tune your model by using a range of learning rate parameter values: expand.grid(learn_rate = seq(0.0001, 0.3, length.out = 30))</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a grid for tuning the learning rate parameter</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>learn_rate_grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">learn_rate =</span> <span class="fu">seq</span>(<span class="fl">0.0001</span>, <span class="fl">0.3</span>, <span class="at">length.out =</span> <span class="dv">30</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Use appropriate metrics argument(s) - Computational efficiency becomes a factor as models get more complex and data get larger. Record the time it takes to run. Do this for each tuning phase you run.You could use {tictoc} or Sys.time().</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a time tracker</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tune the model using cross-validation</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>xgb_res <span class="ot">&lt;-</span> <span class="fu">tune_grid</span>(</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  xgb_spec,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">grid =</span> learn_rate_grid,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(roc_auc, pr_auc, accuracy),</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">control_grid</span>(<span class="at">verbose =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">preprocessor =</span> eel_recipe</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Record the elapsed time</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>300.14 sec elapsed</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Show the performance of the best models and the estimates for the learning rate parameter values associated with each.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the best models and their associated tree parameter values</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>best_rocauc <span class="ot">&lt;-</span> <span class="fu">show_best</span>(xgb_res, <span class="st">"roc_auc"</span>, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>best_pr_auc <span class="ot">&lt;-</span> <span class="fu">show_best</span>(xgb_res, <span class="st">"pr_auc"</span>, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>best_acc <span class="ot">&lt;-</span> <span class="fu">show_best</span>(xgb_res, <span class="st">"accuracy"</span>, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>best <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(best_rocauc,best_pr_auc, best_acc)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_box</span>(<span class="fu">flextable</span>(best))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-52ede474{}.cl-52e49bda{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-52e49be4{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-52e84eec{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-52e84ef6{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-52e86832{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-52e86833{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-52e8683c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-52e8683d{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-52ede474"><thead><tr style="overflow-wrap:break-word;"><th class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49bda">learn_rate</span></p></th><th class="cl-52e86833"><p class="cl-52e84ef6"><span class="cl-52e49bda">.metric</span></p></th><th class="cl-52e86833"><p class="cl-52e84ef6"><span class="cl-52e49bda">.estimator</span></p></th><th class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49bda">mean</span></p></th><th class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49bda">n</span></p></th><th class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49bda">std_err</span></p></th><th class="cl-52e86833"><p class="cl-52e84ef6"><span class="cl-52e49bda">.config</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-52e8683c"><p class="cl-52e84eec"><span class="cl-52e49be4">0.28965862</span></p></td><td class="cl-52e8683d"><p class="cl-52e84ef6"><span class="cl-52e49be4">roc_auc</span></p></td><td class="cl-52e8683d"><p class="cl-52e84ef6"><span class="cl-52e49be4">binary</span></p></td><td class="cl-52e8683c"><p class="cl-52e84eec"><span class="cl-52e49be4">0.8422070</span></p></td><td class="cl-52e8683c"><p class="cl-52e84eec"><span class="cl-52e49be4">10</span></p></td><td class="cl-52e8683c"><p class="cl-52e84eec"><span class="cl-52e49be4">0.014784903</span></p></td><td class="cl-52e8683d"><p class="cl-52e84ef6"><span class="cl-52e49be4">Preprocessor1_Model29</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49be4">0.01044138</span></p></td><td class="cl-52e86833"><p class="cl-52e84ef6"><span class="cl-52e49be4">pr_auc</span></p></td><td class="cl-52e86833"><p class="cl-52e84ef6"><span class="cl-52e49be4">binary</span></p></td><td class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49be4">0.9585236</span></p></td><td class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49be4">10</span></p></td><td class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49be4">0.002940721</span></p></td><td class="cl-52e86833"><p class="cl-52e84ef6"><span class="cl-52e49be4">Preprocessor1_Model02</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49be4">0.20692759</span></p></td><td class="cl-52e86833"><p class="cl-52e84ef6"><span class="cl-52e49be4">accuracy</span></p></td><td class="cl-52e86833"><p class="cl-52e84ef6"><span class="cl-52e49be4">binary</span></p></td><td class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49be4">0.8127023</span></p></td><td class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49be4">10</span></p></td><td class="cl-52e86832"><p class="cl-52e84eec"><span class="cl-52e49be4">0.011724095</span></p></td><td class="cl-52e86833"><p class="cl-52e84ef6"><span class="cl-52e49be4">Preprocessor1_Model21</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="tune-tree-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="tune-tree-parameters">Tune Tree Parameters</h3>
+<ol type="1">
+<li>Create a new specification where you set the learning rate (which you already optimized) and tune the tree parameters.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new specification with the optimal learning rate </span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>xgb_spec2 <span class="ot">&lt;-</span> <span class="fu">boost_tree</span>(</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="fu">tune</span>(),</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">trees =</span> <span class="fu">tune</span>(),  <span class="co"># Tune the number of trees</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">tree_depth =</span> <span class="fu">tune</span>(),  <span class="co"># Tune the maximum depth of each tree</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_n =</span> <span class="fu">tune</span>(),  <span class="co"># Tune the minimum number of observations in each terminal node</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">loss_reduction =</span> <span class="fu">tune</span>(),  <span class="co"># Tune the minimum loss reduction required to make a further partition on a leaf node</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample_size =</span> <span class="dv">1</span>,  <span class="co"># The size of the data set used for modeling within an iteration of the modeling algorithm, such as stochastic gradient boosting.</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">stop_iter =</span> <span class="dv">10</span>,  <span class="co"># Early stopping parameter</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">learn_rate =</span> <span class="fl">0.01044138</span>  <span class="co"># Set the optimal learning rate</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"xgboost"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Set up a tuning grid. This time use grid_max_entropy() to get a representative sampling of the parameter space</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a grid to tune the tree parameters</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>tree_grid <span class="ot">&lt;-</span> <span class="fu">grid_max_entropy</span>(</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mtry</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">12</span>)),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">trees</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">2000</span>)),</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tree_depth</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>)),</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min_n</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">20</span>)),</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">loss_reduction</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.1</span>)),</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">100</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Tune the model using cross-validation</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>xgb_res2 <span class="ot">&lt;-</span> <span class="fu">tune_grid</span>(</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>  xgb_spec2,</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">grid =</span> tree_grid,</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(roc_auc, pr_auc, accuracy),</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">control_grid</span>(<span class="at">verbose =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">preprocessor =</span> eel_recipe</span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>982.03 sec elapsed</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Show the performance of the best models and the estimates for the tree parameter values associated with each.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the best models and their associated tree parameter values</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>best_rocauc2 <span class="ot">&lt;-</span> <span class="fu">show_best</span>(xgb_res2, <span class="st">"roc_auc"</span>, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>best_pr_auc2 <span class="ot">&lt;-</span> <span class="fu">show_best</span>(xgb_res2, <span class="st">"pr_auc"</span>, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>best_acc2 <span class="ot">&lt;-</span> <span class="fu">show_best</span>(xgb_res2, <span class="st">"accuracy"</span>, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>best2 <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(best_rocauc2,best_pr_auc2, best_acc2)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_box</span>(<span class="fu">flextable</span>(best2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-9cce98f2{}.cl-9cc6230c{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-9cc62316{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-9cc95a2c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-9cc95a36{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-9cc96c1a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cc96c24{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cc96c25{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cc96c26{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-9cce98f2"><thead><tr style="overflow-wrap:break-word;"><th class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc6230c">mtry</span></p></th><th class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc6230c">trees</span></p></th><th class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc6230c">min_n</span></p></th><th class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc6230c">tree_depth</span></p></th><th class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc6230c">loss_reduction</span></p></th><th class="cl-9cc96c24"><p class="cl-9cc95a36"><span class="cl-9cc6230c">.metric</span></p></th><th class="cl-9cc96c24"><p class="cl-9cc95a36"><span class="cl-9cc6230c">.estimator</span></p></th><th class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc6230c">mean</span></p></th><th class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc6230c">n</span></p></th><th class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc6230c">std_err</span></p></th><th class="cl-9cc96c24"><p class="cl-9cc95a36"><span class="cl-9cc6230c">.config</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-9cc96c25"><p class="cl-9cc95a2c"><span class="cl-9cc62316">2</span></p></td><td class="cl-9cc96c25"><p class="cl-9cc95a2c"><span class="cl-9cc62316">574</span></p></td><td class="cl-9cc96c25"><p class="cl-9cc95a2c"><span class="cl-9cc62316">1</span></p></td><td class="cl-9cc96c25"><p class="cl-9cc95a2c"><span class="cl-9cc62316">7</span></p></td><td class="cl-9cc96c25"><p class="cl-9cc95a2c"><span class="cl-9cc62316">1.119450</span></p></td><td class="cl-9cc96c26"><p class="cl-9cc95a36"><span class="cl-9cc62316">roc_auc</span></p></td><td class="cl-9cc96c26"><p class="cl-9cc95a36"><span class="cl-9cc62316">binary</span></p></td><td class="cl-9cc96c25"><p class="cl-9cc95a2c"><span class="cl-9cc62316">0.8711348</span></p></td><td class="cl-9cc96c25"><p class="cl-9cc95a2c"><span class="cl-9cc62316">10</span></p></td><td class="cl-9cc96c25"><p class="cl-9cc95a2c"><span class="cl-9cc62316">0.011583911</span></p></td><td class="cl-9cc96c26"><p class="cl-9cc95a36"><span class="cl-9cc62316">Preprocessor1_Model011</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">2</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">574</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">1</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">7</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">1.119450</span></p></td><td class="cl-9cc96c24"><p class="cl-9cc95a36"><span class="cl-9cc62316">pr_auc</span></p></td><td class="cl-9cc96c24"><p class="cl-9cc95a36"><span class="cl-9cc62316">binary</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">0.9654967</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">10</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">0.003299161</span></p></td><td class="cl-9cc96c24"><p class="cl-9cc95a36"><span class="cl-9cc62316">Preprocessor1_Model011</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">10</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">394</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">3</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">7</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">1.012903</span></p></td><td class="cl-9cc96c24"><p class="cl-9cc95a36"><span class="cl-9cc62316">accuracy</span></p></td><td class="cl-9cc96c24"><p class="cl-9cc95a36"><span class="cl-9cc62316">binary</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">0.8456239</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">10</span></p></td><td class="cl-9cc96c1a"><p class="cl-9cc95a2c"><span class="cl-9cc62316">0.010184144</span></p></td><td class="cl-9cc96c24"><p class="cl-9cc95a36"><span class="cl-9cc62316">Preprocessor1_Model081</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_box</span>(<span class="fu">flextable</span>(best_pr_auc2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-9cea8db4{}.cl-9ce2241c{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-9ce22426{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-9ce563d4{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-9ce563de{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-9ce5761c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9ce57626{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9ce57630{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9ce57631{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-9cea8db4"><thead><tr style="overflow-wrap:break-word;"><th class="cl-9ce5761c"><p class="cl-9ce563d4"><span class="cl-9ce2241c">mtry</span></p></th><th class="cl-9ce5761c"><p class="cl-9ce563d4"><span class="cl-9ce2241c">trees</span></p></th><th class="cl-9ce5761c"><p class="cl-9ce563d4"><span class="cl-9ce2241c">min_n</span></p></th><th class="cl-9ce5761c"><p class="cl-9ce563d4"><span class="cl-9ce2241c">tree_depth</span></p></th><th class="cl-9ce5761c"><p class="cl-9ce563d4"><span class="cl-9ce2241c">loss_reduction</span></p></th><th class="cl-9ce57626"><p class="cl-9ce563de"><span class="cl-9ce2241c">.metric</span></p></th><th class="cl-9ce57626"><p class="cl-9ce563de"><span class="cl-9ce2241c">.estimator</span></p></th><th class="cl-9ce5761c"><p class="cl-9ce563d4"><span class="cl-9ce2241c">mean</span></p></th><th class="cl-9ce5761c"><p class="cl-9ce563d4"><span class="cl-9ce2241c">n</span></p></th><th class="cl-9ce5761c"><p class="cl-9ce563d4"><span class="cl-9ce2241c">std_err</span></p></th><th class="cl-9ce57626"><p class="cl-9ce563de"><span class="cl-9ce2241c">.config</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-9ce57630"><p class="cl-9ce563d4"><span class="cl-9ce22426">2</span></p></td><td class="cl-9ce57630"><p class="cl-9ce563d4"><span class="cl-9ce22426">574</span></p></td><td class="cl-9ce57630"><p class="cl-9ce563d4"><span class="cl-9ce22426">1</span></p></td><td class="cl-9ce57630"><p class="cl-9ce563d4"><span class="cl-9ce22426">7</span></p></td><td class="cl-9ce57630"><p class="cl-9ce563d4"><span class="cl-9ce22426">1.11945</span></p></td><td class="cl-9ce57631"><p class="cl-9ce563de"><span class="cl-9ce22426">pr_auc</span></p></td><td class="cl-9ce57631"><p class="cl-9ce563de"><span class="cl-9ce22426">binary</span></p></td><td class="cl-9ce57630"><p class="cl-9ce563d4"><span class="cl-9ce22426">0.9654967</span></p></td><td class="cl-9ce57630"><p class="cl-9ce563d4"><span class="cl-9ce22426">10</span></p></td><td class="cl-9ce57630"><p class="cl-9ce563d4"><span class="cl-9ce22426">0.003299161</span></p></td><td class="cl-9ce57631"><p class="cl-9ce563de"><span class="cl-9ce22426">Preprocessor1_Model011</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="tune-stochastic-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="tune-stochastic-parameters">Tune Stochastic Parameters</h3>
+<ol type="1">
+<li>Create a new specification where you set the learning rate and tree parameters (which you already optimized) and tune the stochastic parameters.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new specification with the optimal learning rate and tree parameters</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>xgb_spec3 <span class="ot">&lt;-</span> <span class="fu">boost_tree</span>(</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="dv">2</span>,</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trees =</span> <span class="dv">574</span>,  <span class="co">#  the number of trees</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">tree_depth =</span> <span class="dv">7</span>,  <span class="co">#  the maximum depth of each tree</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_n =</span> <span class="dv">1</span>,  <span class="co"># the minimum number of observations in each terminal node</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">loss_reduction =</span> <span class="fl">1.119450</span>,  <span class="co">#  the minimum loss reduction required to make a further partition on a leaf node</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample_size =</span> <span class="fu">tune</span>(),  <span class="co"># The size of the data set used for modeling within an iteration of the modeling algorithm, such as stochastic gradient boosting.</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">stop_iter =</span> <span class="fu">tune</span>(),  <span class="co"># Early stopping parameter</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">learn_rate =</span> <span class="fl">0.01044138</span>  <span class="co"># Set the optimal learning rate</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"xgboost"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Set up a tuning grid. Use grid_max_entropy() again.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a grid to tune the stochastic parameters</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>stochastic_grid <span class="ot">&lt;-</span> <span class="fu">grid_max_entropy</span>(</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_size</span>( <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)),</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop_iter</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">50</span>)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Tune the model using cross-validation</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>xgb_res3 <span class="ot">&lt;-</span> <span class="fu">tune_grid</span>(</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>  xgb_spec3,</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">grid =</span> stochastic_grid ,</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(roc_auc, pr_auc, accuracy),</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">control_grid</span>(<span class="at">verbose =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">preprocessor =</span> eel_recipe</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>13.8 sec elapsed</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Show the performance of the best models and the estimates for the tree parameter values associated with each.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the best models and their associated tree parameter values</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>best_rocauc3 <span class="ot">&lt;-</span> <span class="fu">show_best</span>(xgb_res3, <span class="st">"roc_auc"</span>, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>best_pr_auc3 <span class="ot">&lt;-</span> <span class="fu">show_best</span>(xgb_res3, <span class="st">"pr_auc"</span>, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>best_acc3 <span class="ot">&lt;-</span> <span class="fu">show_best</span>(xgb_res3, <span class="st">"accuracy"</span>, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>best3 <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(best_rocauc3,best_pr_auc3, best_acc3)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_box</span>(<span class="fu">flextable</span>(best3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-a55cb558{}.cl-a5543f68{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-a5543f72{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-a5577f02{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-a5577f0c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-a5579190{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a557919a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a557919b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a55791a4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-a55cb558"><thead><tr style="overflow-wrap:break-word;"><th class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f68">sample_size</span></p></th><th class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f68">stop_iter</span></p></th><th class="cl-a557919a"><p class="cl-a5577f0c"><span class="cl-a5543f68">.metric</span></p></th><th class="cl-a557919a"><p class="cl-a5577f0c"><span class="cl-a5543f68">.estimator</span></p></th><th class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f68">mean</span></p></th><th class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f68">n</span></p></th><th class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f68">std_err</span></p></th><th class="cl-a557919a"><p class="cl-a5577f0c"><span class="cl-a5543f68">.config</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-a557919b"><p class="cl-a5577f02"><span class="cl-a5543f72">1</span></p></td><td class="cl-a557919b"><p class="cl-a5577f02"><span class="cl-a5543f72">15</span></p></td><td class="cl-a55791a4"><p class="cl-a5577f0c"><span class="cl-a5543f72">roc_auc</span></p></td><td class="cl-a55791a4"><p class="cl-a5577f0c"><span class="cl-a5543f72">binary</span></p></td><td class="cl-a557919b"><p class="cl-a5577f02"><span class="cl-a5543f72">0.8664657</span></p></td><td class="cl-a557919b"><p class="cl-a5577f02"><span class="cl-a5543f72">10</span></p></td><td class="cl-a557919b"><p class="cl-a5577f02"><span class="cl-a5543f72">0.011865011</span></p></td><td class="cl-a55791a4"><p class="cl-a5577f0c"><span class="cl-a5543f72">Preprocessor1_Model1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">1</span></p></td><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">15</span></p></td><td class="cl-a557919a"><p class="cl-a5577f0c"><span class="cl-a5543f72">pr_auc</span></p></td><td class="cl-a557919a"><p class="cl-a5577f0c"><span class="cl-a5543f72">binary</span></p></td><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">0.9638896</span></p></td><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">10</span></p></td><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">0.003282888</span></p></td><td class="cl-a557919a"><p class="cl-a5577f0c"><span class="cl-a5543f72">Preprocessor1_Model1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">1</span></p></td><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">15</span></p></td><td class="cl-a557919a"><p class="cl-a5577f0c"><span class="cl-a5543f72">accuracy</span></p></td><td class="cl-a557919a"><p class="cl-a5577f0c"><span class="cl-a5543f72">binary</span></p></td><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">0.8427259</span></p></td><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">10</span></p></td><td class="cl-a5579190"><p class="cl-a5577f02"><span class="cl-a5543f72">0.009127297</span></p></td><td class="cl-a557919a"><p class="cl-a5577f0c"><span class="cl-a5543f72">Preprocessor1_Model1</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+</section>
+<section id="finalize-workflow-and-make-final-prediction" class="level2">
+<h2 class="anchored" data-anchor-id="finalize-workflow-and-make-final-prediction">Finalize workflow and make final prediction</h2>
+<ol type="1">
+<li>Assemble your final workflow will all of your optimized parameters and do a final fit.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>xgb_spec_final <span class="ot">&lt;-</span> <span class="fu">boost_tree</span>(</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="dv">2</span>,</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">trees =</span> <span class="dv">574</span>,  <span class="co">#  the number of trees</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tree_depth =</span> <span class="dv">7</span>,  <span class="co">#  the maximum depth of each tree</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_n =</span> <span class="dv">1</span>,  <span class="co"># the minimum number of observations in each terminal node</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">loss_reduction =</span> <span class="fl">1.119450</span>,  <span class="co">#  the minimum loss reduction required to make a further partition on a leaf node</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample_size =</span> <span class="dv">1</span>,  <span class="co"># The size of the data set used for modeling within an iteration of the modeling algorithm, such as stochastic gradient boosting.</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">stop_iter =</span> <span class="dv">15</span>,  <span class="co"># Early stopping parameter</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">learn_rate =</span> <span class="fl">0.01044138</span>  <span class="co"># Set the optimal learning rate</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"xgboost"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the final workflow</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>xgb_wf_final <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(xgb_spec_final) <span class="sc">%&gt;%</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(eel_recipe)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model using 10-fold cross-validation</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>final_fit <span class="ot">&lt;-</span> xgb_wf_final <span class="sc">%&gt;%</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> <span class="fu">metric_set</span>(roc_auc,pr_auc, accuracy),</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8.16 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the average performance across all folds</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>final_perf <span class="ot">&lt;-</span> final_fit <span class="sc">%&gt;%</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>() </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_box</span>(<span class="fu">flextable</span>(final_perf) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-aa5e9792{}.cl-aa5603ac{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-aa5603b6{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-aa594eea{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-aa594ef4{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-aa5960f6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-aa59610a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-aa59610b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-aa59610c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-aa5e9792"><thead><tr style="overflow-wrap:break-word;"><th class="cl-aa5960f6"><p class="cl-aa594eea"><span class="cl-aa5603ac">.metric</span></p></th><th class="cl-aa5960f6"><p class="cl-aa594eea"><span class="cl-aa5603ac">.estimator</span></p></th><th class="cl-aa59610a"><p class="cl-aa594ef4"><span class="cl-aa5603ac">mean</span></p></th><th class="cl-aa59610a"><p class="cl-aa594ef4"><span class="cl-aa5603ac">n</span></p></th><th class="cl-aa59610a"><p class="cl-aa594ef4"><span class="cl-aa5603ac">std_err</span></p></th><th class="cl-aa5960f6"><p class="cl-aa594eea"><span class="cl-aa5603ac">.config</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-aa59610b"><p class="cl-aa594eea"><span class="cl-aa5603b6">accuracy</span></p></td><td class="cl-aa59610b"><p class="cl-aa594eea"><span class="cl-aa5603b6">binary</span></p></td><td class="cl-aa59610c"><p class="cl-aa594ef4"><span class="cl-aa5603b6">0.8412973</span></p></td><td class="cl-aa59610c"><p class="cl-aa594ef4"><span class="cl-aa5603b6">10</span></p></td><td class="cl-aa59610c"><p class="cl-aa594ef4"><span class="cl-aa5603b6">0.009945459</span></p></td><td class="cl-aa59610b"><p class="cl-aa594eea"><span class="cl-aa5603b6">Preprocessor1_Model1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-aa5960f6"><p class="cl-aa594eea"><span class="cl-aa5603b6">pr_auc</span></p></td><td class="cl-aa5960f6"><p class="cl-aa594eea"><span class="cl-aa5603b6">binary</span></p></td><td class="cl-aa59610a"><p class="cl-aa594ef4"><span class="cl-aa5603b6">0.9639506</span></p></td><td class="cl-aa59610a"><p class="cl-aa594ef4"><span class="cl-aa5603b6">10</span></p></td><td class="cl-aa59610a"><p class="cl-aa594ef4"><span class="cl-aa5603b6">0.003385449</span></p></td><td class="cl-aa5960f6"><p class="cl-aa594eea"><span class="cl-aa5603b6">Preprocessor1_Model1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-aa5960f6"><p class="cl-aa594eea"><span class="cl-aa5603b6">roc_auc</span></p></td><td class="cl-aa5960f6"><p class="cl-aa594eea"><span class="cl-aa5603b6">binary</span></p></td><td class="cl-aa59610a"><p class="cl-aa594ef4"><span class="cl-aa5603b6">0.8662291</span></p></td><td class="cl-aa59610a"><p class="cl-aa594ef4"><span class="cl-aa5603b6">10</span></p></td><td class="cl-aa59610a"><p class="cl-aa594ef4"><span class="cl-aa5603b6">0.011864232</span></p></td><td class="cl-aa5960f6"><p class="cl-aa594eea"><span class="cl-aa5603b6">Preprocessor1_Model1</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>eel_recipe_test <span class="ot">&lt;-</span> <span class="fu">recipe</span>(Angaus <span class="sc">~</span> ., <span class="at">data =</span> data_test) <span class="sc">%&gt;%</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>xgb_wf_final_test <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(xgb_spec_final) <span class="sc">%&gt;%</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(eel_recipe_test)</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>final_fit_test <span class="ot">&lt;-</span> xgb_wf_final_test <span class="sc">%&gt;%</span></span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(</span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> <span class="fu">vfold_cv</span>(data_test, <span class="at">v =</span> <span class="dv">10</span>, <span class="at">strata =</span> Angaus),</span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> <span class="fu">metric_set</span>(roc_auc,pr_auc, accuracy),</span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8.92 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the average performance across all folds</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>final_perf_test <span class="ot">&lt;-</span> final_fit_test <span class="sc">%&gt;%</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>() </span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_box</span>(<span class="fu">flextable</span>(final_perf_test) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-afd08bf4{}.cl-afc7221c{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-afc72226{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-afcad042{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-afcad056{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-afcae3ac{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-afcae3b6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-afcae3b7{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-afcae3c0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-afd08bf4"><thead><tr style="overflow-wrap:break-word;"><th class="cl-afcae3ac"><p class="cl-afcad042"><span class="cl-afc7221c">.metric</span></p></th><th class="cl-afcae3ac"><p class="cl-afcad042"><span class="cl-afc7221c">.estimator</span></p></th><th class="cl-afcae3b6"><p class="cl-afcad056"><span class="cl-afc7221c">mean</span></p></th><th class="cl-afcae3b6"><p class="cl-afcad056"><span class="cl-afc7221c">n</span></p></th><th class="cl-afcae3b6"><p class="cl-afcad056"><span class="cl-afc7221c">std_err</span></p></th><th class="cl-afcae3ac"><p class="cl-afcad042"><span class="cl-afc7221c">.config</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-afcae3b7"><p class="cl-afcad042"><span class="cl-afc72226">accuracy</span></p></td><td class="cl-afcae3b7"><p class="cl-afcad042"><span class="cl-afc72226">binary</span></p></td><td class="cl-afcae3c0"><p class="cl-afcad056"><span class="cl-afc72226">0.8470968</span></p></td><td class="cl-afcae3c0"><p class="cl-afcad056"><span class="cl-afc72226">10</span></p></td><td class="cl-afcae3c0"><p class="cl-afcad056"><span class="cl-afc72226">0.015141238</span></p></td><td class="cl-afcae3b7"><p class="cl-afcad042"><span class="cl-afc72226">Preprocessor1_Model1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-afcae3ac"><p class="cl-afcad042"><span class="cl-afc72226">pr_auc</span></p></td><td class="cl-afcae3ac"><p class="cl-afcad042"><span class="cl-afc72226">binary</span></p></td><td class="cl-afcae3b6"><p class="cl-afcad056"><span class="cl-afc72226">0.9676901</span></p></td><td class="cl-afcae3b6"><p class="cl-afcad056"><span class="cl-afc72226">10</span></p></td><td class="cl-afcae3b6"><p class="cl-afcad056"><span class="cl-afc72226">0.006031429</span></p></td><td class="cl-afcae3ac"><p class="cl-afcad042"><span class="cl-afc72226">Preprocessor1_Model1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-afcae3ac"><p class="cl-afcad042"><span class="cl-afc72226">roc_auc</span></p></td><td class="cl-afcae3ac"><p class="cl-afcad042"><span class="cl-afc72226">binary</span></p></td><td class="cl-afcae3b6"><p class="cl-afcad056"><span class="cl-afc72226">0.8818452</span></p></td><td class="cl-afcae3b6"><p class="cl-afcad056"><span class="cl-afc72226">10</span></p></td><td class="cl-afcae3b6"><p class="cl-afcad056"><span class="cl-afc72226">0.019236512</span></p></td><td class="cl-afcae3ac"><p class="cl-afcad042"><span class="cl-afc72226">Preprocessor1_Model1</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<ol start="2" type="1">
+<li>How well did your model perform? What types of errors did it make?</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the confusion matrix for the final model training data</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>final_pred <span class="ot">&lt;-</span> final_fit <span class="sc">%&gt;%</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_predictions</span>()</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">conf_mat</span>(final_pred, <span class="at">truth =</span> Angaus, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction   0   1
+         0 526  79
+         1  32  62</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the confusion matrix for the final model test data</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>final_pred_test <span class="ot">&lt;-</span> final_fit_test <span class="sc">%&gt;%</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_predictions</span>()</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>cm_test <span class="ot">&lt;-</span> <span class="fu">conf_mat</span>(final_pred_test, <span class="at">truth =</span> Angaus, <span class="at">estimate =</span> .pred_class)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(cm_test, <span class="at">type =</span> <span class="st">"mosaic"</span>) <span class="sc">+</span></span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(cm_test, <span class="at">type =</span> <span class="st">"heatmap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Romero_lab6_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Running the model on the test data</p>
+<p>**The confusion matrix shows the classification results of the final model. There were 26 true negatives (species not present and correctly classified), 11 false positives (species present but wrongly classified as absent), 35 false negatives (species absent but wrongly classified as present), and 229 true positives (species present and correctly classified) in the test dataset.</p>
+<p>For the accuracy metric, the mean value is<br>
+0.8470968, which means that on average, the model correctly predicts the presence or absence of the eel species in 84.7% of cases. The standard error is 0.015141238, indicating some variation in performance across the 10 folds.</p>
+<p>For the ROC AUC metric, the mean value is 0.8818452, which means that the model has good discriminatory power to distinguish between positive and negative cases. The standard error is 0.019236512, indicating relatively low variability in performance across the 10 folds.**</p>
+<p>For the PR AUC metric, the mean value is 0.9676901, which means that the model has very good precision-recall tradeoff, and can achieve high precision while maintaining high recall or vice versa. The standard error is 0.006031429, indicating relatively low variability in performance across the 10 folds. This suggests that the model is consistently able to achieve high precision-recall tradeoff across different test sets.</p>
+</section>
+<section id="fit-your-model-the-evaluation-data-and-compare-performance" class="level2">
+<h2 class="anchored" data-anchor-id="fit-your-model-the-evaluation-data-and-compare-performance">Fit your model the evaluation data and compare performance</h2>
+<ol type="1">
+<li>Now fit your final model to the big dataset: data/eval.data.csv</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>eel_eval_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">'eel.eval.data.csv'</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 500 Columns: 13
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (1): Method
+dbl (12): Angaus_obs, SegSumT, SegTSeas, SegLowFlow, DSDist, DSMaxSlope, USA...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>eel_eval_data<span class="sc">$</span>Angaus_obs <span class="ot">&lt;-</span> <span class="fu">factor</span>(eel_eval_data<span class="sc">$</span>Angaus_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a recipe for the data</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>eel_recipe_eval <span class="ot">&lt;-</span> <span class="fu">recipe</span>(Angaus_obs <span class="sc">~</span> ., <span class="at">data =</span> eel_eval_data) <span class="sc">%&gt;%</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>xgb_wf_final_eval <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(xgb_spec_final) <span class="sc">%&gt;%</span></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(eel_recipe_eval)</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>final_fit_eval <span class="ot">&lt;-</span> xgb_wf_final_eval <span class="sc">%&gt;%</span></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(</span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> <span class="fu">vfold_cv</span>(eel_eval_data, <span class="at">v =</span> <span class="dv">10</span>, <span class="at">strata =</span> Angaus_obs),</span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> <span class="fu">metric_set</span>(roc_auc,pr_auc, accuracy),</span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8.72 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the average performance across all folds</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>final_perf_eval <span class="ot">&lt;-</span> final_fit_eval <span class="sc">%&gt;%</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>() </span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_box</span>(<span class="fu">flextable</span>(final_perf_eval) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-b601a2e2{}.cl-b5f89bca{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b5f89bd4{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b5fc36d6{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b5fc36e0{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b5fc49a0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5fc49aa{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5fc49ab{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5fc49ac{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0.75pt solid rgba(102, 102, 102, 1.00);border-right: 0.75pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-b601a2e2"><thead><tr style="overflow-wrap:break-word;"><th class="cl-b5fc49a0"><p class="cl-b5fc36d6"><span class="cl-b5f89bca">.metric</span></p></th><th class="cl-b5fc49a0"><p class="cl-b5fc36d6"><span class="cl-b5f89bca">.estimator</span></p></th><th class="cl-b5fc49aa"><p class="cl-b5fc36e0"><span class="cl-b5f89bca">mean</span></p></th><th class="cl-b5fc49aa"><p class="cl-b5fc36e0"><span class="cl-b5f89bca">n</span></p></th><th class="cl-b5fc49aa"><p class="cl-b5fc36e0"><span class="cl-b5f89bca">std_err</span></p></th><th class="cl-b5fc49a0"><p class="cl-b5fc36d6"><span class="cl-b5f89bca">.config</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-b5fc49ab"><p class="cl-b5fc36d6"><span class="cl-b5f89bd4">accuracy</span></p></td><td class="cl-b5fc49ab"><p class="cl-b5fc36d6"><span class="cl-b5f89bd4">binary</span></p></td><td class="cl-b5fc49ac"><p class="cl-b5fc36e0"><span class="cl-b5f89bd4">0.8280432</span></p></td><td class="cl-b5fc49ac"><p class="cl-b5fc36e0"><span class="cl-b5f89bd4">10</span></p></td><td class="cl-b5fc49ac"><p class="cl-b5fc36e0"><span class="cl-b5f89bd4">0.011533081</span></p></td><td class="cl-b5fc49ab"><p class="cl-b5fc36d6"><span class="cl-b5f89bd4">Preprocessor1_Model1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b5fc49a0"><p class="cl-b5fc36d6"><span class="cl-b5f89bd4">pr_auc</span></p></td><td class="cl-b5fc49a0"><p class="cl-b5fc36d6"><span class="cl-b5f89bd4">binary</span></p></td><td class="cl-b5fc49aa"><p class="cl-b5fc36e0"><span class="cl-b5f89bd4">0.9605975</span></p></td><td class="cl-b5fc49aa"><p class="cl-b5fc36e0"><span class="cl-b5f89bd4">10</span></p></td><td class="cl-b5fc49aa"><p class="cl-b5fc36e0"><span class="cl-b5f89bd4">0.005515549</span></p></td><td class="cl-b5fc49a0"><p class="cl-b5fc36d6"><span class="cl-b5f89bd4">Preprocessor1_Model1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b5fc49a0"><p class="cl-b5fc36d6"><span class="cl-b5f89bd4">roc_auc</span></p></td><td class="cl-b5fc49a0"><p class="cl-b5fc36d6"><span class="cl-b5f89bd4">binary</span></p></td><td class="cl-b5fc49aa"><p class="cl-b5fc36e0"><span class="cl-b5f89bd4">0.8706177</span></p></td><td class="cl-b5fc49aa"><p class="cl-b5fc36e0"><span class="cl-b5f89bd4">10</span></p></td><td class="cl-b5fc49aa"><p class="cl-b5fc36e0"><span class="cl-b5f89bd4">0.014172529</span></p></td><td class="cl-b5fc49a0"><p class="cl-b5fc36d6"><span class="cl-b5f89bd4">Preprocessor1_Model1</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the confusion matrix for the final model test data</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>final_pred_eval <span class="ot">&lt;-</span> final_fit_eval <span class="sc">%&gt;%</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_predictions</span>()</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>cm_eval <span class="ot">&lt;-</span> <span class="fu">conf_mat</span>(final_pred_eval, <span class="at">truth =</span> Angaus_obs, <span class="at">estimate =</span> .pred_class)</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(cm_eval, <span class="at">type =</span> <span class="st">"mosaic"</span>) <span class="sc">+</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(cm_eval, <span class="at">type =</span> <span class="st">"heatmap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Romero_lab6_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Running the model on the test data</p>
+<p>**The confusion matrix shows the classification results of the final model. There were 46 true negatives (species not present and correctly classified), 25 false positives (species present but wrongly classified as absent), 61 false negatives (species absent but wrongly classified as present), and 368 true positives (species present and correctly classified) in the test dataset.</p>
+<p>For the accuracy metric, the mean value is<br>
+0.8280432, which means that on average, the model correctly predicts the presence or absence of the eel species in 82.8% of cases. The standard error is 0.011533081, indicating some variation in performance across the 10 folds.</p>
+<p>For the ROC AUC metric, the mean value is 0.8706177, which means that the model has good discriminatory power to distinguish between positive and negative cases. The standard error is 0.014172529, indicating relatively low variability in performance across the 10 folds.**</p>
+<p>For the PR AUC metric, the mean value is 0.9605975, which means that the model has very good precision-recall tradeoff, and can achieve high precision while maintaining high recall or vice versa. The standard error is 0.005515549, indicating relatively low variability in performance across the 10 folds. This suggests that the model is consistently able to achieve high precision-recall tradeoff across different test sets.</p>
+<ol start="3" type="1">
+<li>How do your results compare to those of Elith et al.?</li>
+</ol>
+<ul>
+<li>Use {vip} to compare variable importance</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run your final model</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>final_tuned <span class="ot">&lt;-</span> <span class="fu">tune_grid</span>(</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">object =</span> xgb_wf_final_eval,</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> <span class="fu">vfold_cv</span>(eel_eval_data, <span class="at">v =</span> <span class="dv">10</span>, <span class="at">strata =</span> Angaus_obs),</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics   =</span> <span class="fu">metric_set</span>(pr_auc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No tuning parameters have been detected, performance will be evaluated
+using the resamples with no tuning. Did you want to [tune()] parameters?</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>final_eval_final <span class="ot">&lt;-</span> xgb_wf_final_eval <span class="sc">%&gt;%</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">finalize_workflow</span>(<span class="fu">select_best</span>(final_tuned, <span class="at">metric =</span> <span class="st">"pr_auc"</span>))</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting our final workflow</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>final_fit <span class="ot">=</span> final_eval_final <span class="sc">%&gt;%</span> <span class="fu">fit</span>(<span class="at">data =</span> eel_eval_data)</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.56 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>final_fit <span class="sc">%&gt;%</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_fit_parsnip</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">vip</span>(<span class="at">geom =</span> <span class="st">"col"</span>, <span class="at">num_features =</span> <span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Romero_lab6_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="elith_vip.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Elith, J., et al.&nbsp;“A Working Guide to Boosted Regression Trees.” Journal of Animal Ecology, vol.&nbsp;77, no. 4, July 2008, pp.&nbsp;802–13, https://doi.org/10.1111/j.1365-2656.2008.01390.x.</figcaption><p></p>
+</figure>
+</div>
+<p>Summer air Temperature is the greatest variable of importance in both models. There are some similarities and some drastic differences. My model places US slope as the next highest at 17.5% where they only have it at 6-9%. I then have US Native which was their second most important but the values are similar. The combined method does not reach the same level of importance in my model but the remaining variables have similar values.</p>
+<ul>
+<li>What do your variable importance results tell you about the distribution of this eel species?</li>
+</ul>
+<p>That the distribution is largely dependent on the Summer air temperature, in areas with indigenous forest(proportion) and dependent on the average slope in the upstream. This follows the papers description</p>
+<blockquote class="blockquote">
+<p><span class="smallcaps">‘The models developed for A. australis are consistent with the known ecology of the species, and accurately describe a species occurring in warm, lowland rivers in agricultural landscapes, often close to the coast but also penetrating inland, and preferring reaches with fine sediments. The modelled interactions highlight the suitability of habitats combining low flood frequencies and warm temperatures’</span></p>
+</blockquote>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
